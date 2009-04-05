@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="WaveOut.cs" company="(none)">
-//  Copyright (c) 2009 John Gietzen
+//  Copyright © 2009 John Gietzen
 //
 //  Permission is hereby granted, free of charge, to any person obtaining
 //  a copy of this software and associated documentation files (the
@@ -169,7 +169,7 @@ namespace WinMM
         {
             get
             {
-                uint volume = 0;
+                int volume = 0;
                 if (this.handle != null && !this.handle.IsInvalid && !this.handle.IsClosed)
                 {
                     NativeMethods.Throw(
@@ -179,12 +179,12 @@ namespace WinMM
                 else
                 {
                     NativeMethods.Throw(
-                        NativeMethods.waveOutGetVolume((UIntPtr)(uint)this.deviceId, ref volume),
+                        NativeMethods.waveOutGetVolume((IntPtr)this.deviceId, ref volume),
                         NativeMethods.ErrorSource.WaveOut);
                 }
 
-                uint left = volume & (uint)0xFFFF;
-                uint right = volume >> 16;
+                uint left = unchecked((uint)volume) & (uint)0xFFFF;
+                uint right = unchecked((uint)volume) >> 16;
                 Volume ret = new Volume();
                 ret.Left = (float)left / UInt16.MaxValue;
                 ret.Right = (float)right / UInt16.MaxValue;
@@ -202,13 +202,13 @@ namespace WinMM
                 if (this.handle != null && !this.handle.IsInvalid && !this.handle.IsClosed)
                 {
                     NativeMethods.Throw(
-                        NativeMethods.waveOutSetVolume(this.handle, volume),
+                        NativeMethods.waveOutSetVolume(this.handle, unchecked((int)volume)),
                         NativeMethods.ErrorSource.WaveOut);
                 }
                 else
                 {
                     NativeMethods.Throw(
-                        NativeMethods.waveOutSetVolume((UIntPtr)(uint)this.deviceId, volume),
+                        NativeMethods.waveOutSetVolume((IntPtr)this.deviceId, unchecked((int)volume)),
                         NativeMethods.ErrorSource.WaveOut);
                 }
             }
@@ -221,7 +221,7 @@ namespace WinMM
         {
             get
             {
-                uint pitch = 0;
+                int pitch = 0;
                 NativeMethods.Throw(
                     NativeMethods.waveOutGetPitch(this.handle, ref pitch),
                     NativeMethods.ErrorSource.WaveOut);
@@ -244,7 +244,7 @@ namespace WinMM
         {
             get
             {
-                uint rate = 0;
+                int rate = 0;
                 NativeMethods.Throw(
                     NativeMethods.waveOutGetPlaybackRate(this.handle, ref rate),
                     NativeMethods.ErrorSource.WaveOut);
@@ -315,7 +315,7 @@ namespace WinMM
                 NativeMethods.Throw(
                     NativeMethods.waveOutOpen(
                         ref tempHandle,
-                        (uint)this.deviceId,
+                        this.deviceId,
                         ref wfx,
                         this.callback,
                         (IntPtr)0,
@@ -376,7 +376,7 @@ namespace WinMM
                 Marshal.Copy(bufferData, 0, mem, bufferData.Length);
 
                 NativeMethods.WAVEHDR pwh = new NativeMethods.WAVEHDR();
-                pwh.dwBufferLength = (uint)bufferData.Length;
+                pwh.dwBufferLength = bufferData.Length;
                 pwh.dwFlags = 0;
                 pwh.lpData = mem;
                 pwh.dwUser = new IntPtr(12345);
@@ -385,11 +385,11 @@ namespace WinMM
                 Marshal.StructureToPtr(pwh, header, false);
 
                 NativeMethods.Throw(
-                    NativeMethods.waveOutPrepareHeader(this.handle, header, (uint)Marshal.SizeOf(typeof(NativeMethods.WAVEHDR))),
+                    NativeMethods.waveOutPrepareHeader(this.handle, header, Marshal.SizeOf(typeof(NativeMethods.WAVEHDR))),
                     NativeMethods.ErrorSource.WaveOut);
 
                 NativeMethods.Throw(
-                    NativeMethods.waveOutWrite(this.handle, header, (uint)Marshal.SizeOf(typeof(NativeMethods.WAVEHDR))),
+                    NativeMethods.waveOutWrite(this.handle, header, Marshal.SizeOf(typeof(NativeMethods.WAVEHDR))),
                     NativeMethods.ErrorSource.WaveOut);
 
                 lock (this.bufferingLock)
@@ -458,7 +458,7 @@ namespace WinMM
             IntPtr dummy = new IntPtr(0);
             NativeMethods.MMSYSERROR ret = NativeMethods.waveOutOpen(
                 ref dummy,
-                (uint)this.deviceId,
+                this.deviceId,
                 ref wfx,
                 null,
                 (IntPtr)0,
@@ -496,7 +496,7 @@ namespace WinMM
         private static WaveOutDeviceCaps GetDeviceCaps(int deviceId)
         {
             NativeMethods.WAVEOUTCAPS wocaps = new NativeMethods.WAVEOUTCAPS();
-            NativeMethods.waveOutGetDevCaps(new UIntPtr((uint)deviceId), ref wocaps, (uint)Marshal.SizeOf(wocaps.GetType()));
+            NativeMethods.waveOutGetDevCaps(new IntPtr(deviceId), ref wocaps, Marshal.SizeOf(wocaps.GetType()));
             WaveOutDeviceCaps caps = new WaveOutDeviceCaps();
             caps.DeviceId = (int)deviceId;
             caps.Channels = wocaps.wChannels;
@@ -514,7 +514,7 @@ namespace WinMM
         /// </summary>
         /// <param name="manufacturerId">The ManufacturerID for which to search.</param>
         /// <returns>The specified manufacturer's name.</returns>
-        private static string GetManufacturer(ushort manufacturerId)
+        private static string GetManufacturer(int manufacturerId)
         {
             XmlDocument manufacturers = Manufacturers;
             XmlElement man = null;
@@ -537,12 +537,12 @@ namespace WinMM
         /// </summary>
         /// <param name="value">The floating point number to convert.</param>
         /// <returns>A 32-bit fixed point number.</returns>
-        private static uint FloatToFixed(float value)
+        private static int FloatToFixed(float value)
         {
             short whole = (short)value;
             ushort fraction = (ushort)((value - whole) * ushort.MaxValue);
 
-            return (((uint)whole) << 8) | (((uint)fraction) >> 8);
+            return unchecked((int)((((uint)whole) << 8) | (((uint)fraction) >> 8)));
         }
 
         /// <summary>
@@ -550,9 +550,9 @@ namespace WinMM
         /// </summary>
         /// <param name="value">The 32-bit fixed point number to convert.</param>
         /// <returns>A floating point number.</returns>
-        private static float FixedToFloat(uint value)
+        private static float FixedToFloat(int value)
         {
-            short whole = (short)(value >> 8);
+            short whole = (short)(unchecked((uint)value) >> 8);
             ushort fraction = (ushort)value;
 
             return (float)whole + (((float)fraction) / ushort.MaxValue);
@@ -649,7 +649,7 @@ namespace WinMM
             IntPtr data = pwh.lpData;
 
             NativeMethods.Throw(
-                NativeMethods.waveOutUnprepareHeader(this.handle, header, (uint)Marshal.SizeOf(typeof(NativeMethods.WAVEHDR))),
+                NativeMethods.waveOutUnprepareHeader(this.handle, header, Marshal.SizeOf(typeof(NativeMethods.WAVEHDR))),
                 NativeMethods.ErrorSource.WaveOut);
 
             Marshal.FreeHGlobal(data);

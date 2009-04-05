@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="PlaySound.cs" company="(none)">
-//  Copyright (c) 2009 John Gietzen
+//  Copyright © 2009 John Gietzen
 //
 //  Permission is hereby granted, free of charge, to any person obtaining
 //  a copy of this software and associated documentation files (the
@@ -53,7 +53,7 @@ namespace WinMM
         /// </remarks>
         public static void PlaySystemSound(string systemSoundName)
         {
-            uint res = NativeMethods.PlaySound(systemSoundName, (IntPtr)0, NativeMethods.PLAYSOUNDFLAGS.SND_ALIAS | NativeMethods.PLAYSOUNDFLAGS.SND_PURGE | NativeMethods.PLAYSOUNDFLAGS.SND_NODEFAULT | NativeMethods.PLAYSOUNDFLAGS.SND_ASYNC);
+            int res = NativeMethods.PlaySound(systemSoundName, (IntPtr)0, NativeMethods.PLAYSOUNDFLAGS.SND_ALIAS | NativeMethods.PLAYSOUNDFLAGS.SND_PURGE | NativeMethods.PLAYSOUNDFLAGS.SND_NODEFAULT | NativeMethods.PLAYSOUNDFLAGS.SND_ASYNC);
             if (res == 0)
             {
                 throw new Win32Exception(Marshal.GetLastWin32Error());
@@ -65,7 +65,7 @@ namespace WinMM
         /// </summary>
         public static void StopAllSounds()
         {
-            uint res = NativeMethods.PlaySound(null, (IntPtr)0, NativeMethods.PLAYSOUNDFLAGS.SND_PURGE);
+            int res = NativeMethods.PlaySound(null, (IntPtr)0, NativeMethods.PLAYSOUNDFLAGS.SND_PURGE);
             if (res == 0)
             {
                 throw new Win32Exception(Marshal.GetLastWin32Error());
@@ -78,7 +78,7 @@ namespace WinMM
         /// <param name="soundFileName">The filename of the file to play.</param>
         public static void PlaySoundFile(string soundFileName)
         {
-            uint res = NativeMethods.PlaySound(soundFileName, (IntPtr)0, NativeMethods.PLAYSOUNDFLAGS.SND_FILENAME | NativeMethods.PLAYSOUNDFLAGS.SND_PURGE | NativeMethods.PLAYSOUNDFLAGS.SND_NODEFAULT | NativeMethods.PLAYSOUNDFLAGS.SND_ASYNC);
+            int res = NativeMethods.PlaySound(soundFileName, (IntPtr)0, NativeMethods.PLAYSOUNDFLAGS.SND_FILENAME | NativeMethods.PLAYSOUNDFLAGS.SND_PURGE | NativeMethods.PLAYSOUNDFLAGS.SND_NODEFAULT | NativeMethods.PLAYSOUNDFLAGS.SND_ASYNC);
             if (res == 0)
             {
                 throw new Win32Exception(Marshal.GetLastWin32Error());

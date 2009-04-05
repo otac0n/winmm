@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="WaveIn.cs" company="(none)">
-//  Copyright (c) 2009 John Gietzen
+//  Copyright © 2009 John Gietzen
 //
 //  Permission is hereby granted, free of charge, to any person obtaining
 //  a copy of this software and associated documentation files (the
@@ -252,7 +252,7 @@ namespace WinMM
                 NativeMethods.Throw(
                     NativeMethods.waveInOpen(
                         ref tempHandle,
-                        (uint)this.deviceId,
+                        this.deviceId,
                         ref wfx,
                         this.callback,
                         (IntPtr)0,
@@ -361,7 +361,7 @@ namespace WinMM
             IntPtr dummy = new IntPtr(0);
             NativeMethods.MMSYSERROR ret = NativeMethods.waveInOpen(
                 ref dummy,
-                (uint)this.deviceId,
+                this.deviceId,
                 ref wfx,
                 null,
                 (IntPtr)0,
@@ -399,7 +399,7 @@ namespace WinMM
         private static WaveInDeviceCaps GetDeviceCaps(int deviceId)
         {
             NativeMethods.WAVEINCAPS wicaps = new NativeMethods.WAVEINCAPS();
-            NativeMethods.waveInGetDevCaps(new UIntPtr((uint)deviceId), ref wicaps, (uint)Marshal.SizeOf(wicaps.GetType()));
+            NativeMethods.waveInGetDevCaps((IntPtr)deviceId, ref wicaps, Marshal.SizeOf(wicaps.GetType()));
             WaveInDeviceCaps caps = new WaveInDeviceCaps();
             caps.DeviceId = (int)deviceId;
             caps.Channels = wicaps.wChannels;
@@ -416,7 +416,7 @@ namespace WinMM
         /// </summary>
         /// <param name="manufacturerId">The ManufacturerID for which to search.</param>
         /// <returns>The specified manufacturer's name.</returns>
-        private static string GetManufacturer(ushort manufacturerId)
+        private static string GetManufacturer(int manufacturerId)
         {
             XmlDocument manufacturers = Manufacturers;
             XmlElement man = null;
@@ -513,7 +513,7 @@ namespace WinMM
 
             // Initialize the buffer header, including a reference to the buffer memory
             NativeMethods.WAVEHDR pwh = new NativeMethods.WAVEHDR();
-            pwh.dwBufferLength = (uint)bufferLength;
+            pwh.dwBufferLength = bufferLength;
             pwh.dwFlags = 0;
             pwh.lpData = mem;
             pwh.dwUser = new IntPtr(12345);
@@ -524,12 +524,12 @@ namespace WinMM
 
             // Prepare the header
             NativeMethods.Throw(
-                NativeMethods.waveInPrepareHeader(this.handle, header, (uint)Marshal.SizeOf(typeof(NativeMethods.WAVEHDR))),
+                NativeMethods.waveInPrepareHeader(this.handle, header, Marshal.SizeOf(typeof(NativeMethods.WAVEHDR))),
                 NativeMethods.ErrorSource.WaveOut);
 
             // Add the buffer to the device
             NativeMethods.Throw(
-                NativeMethods.waveInAddBuffer(this.handle, header, (uint)Marshal.SizeOf(typeof(NativeMethods.WAVEHDR))),
+                NativeMethods.waveInAddBuffer(this.handle, header, Marshal.SizeOf(typeof(NativeMethods.WAVEHDR))),
                 NativeMethods.ErrorSource.WaveOut);
 
             lock (this.bufferingLock)
@@ -568,7 +568,7 @@ namespace WinMM
 
             // Unprepare the header
             NativeMethods.Throw(
-                NativeMethods.waveInUnprepareHeader(this.handle, header, (uint)Marshal.SizeOf(typeof(NativeMethods.WAVEHDR))),
+                NativeMethods.waveInUnprepareHeader(this.handle, header, Marshal.SizeOf(typeof(NativeMethods.WAVEHDR))),
                 NativeMethods.ErrorSource.WaveIn);
 
             // Free the unmanaged memory

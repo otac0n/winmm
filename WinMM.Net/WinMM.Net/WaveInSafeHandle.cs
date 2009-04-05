@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="WaveInSafeHandle.cs" company="(none)">
-//  Copyright (c) 2009 John Gietzen
+//  Copyright © 2009 John Gietzen
 //
 //  Permission is hereby granted, free of charge, to any person obtaining
 //  a copy of this software and associated documentation files (the
@@ -33,7 +33,7 @@ namespace WinMM
     /// <summary>
     /// Encapsulates a handle to a waveIn device.
     /// </summary>
-    internal sealed class WaveInSafeHandle : SafeHandleZeroOrMinusOneIsInvalid
+    public sealed class WaveInSafeHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
         /// <summary>
         /// Initializes a new instance of the WaveInSafeHandle class.

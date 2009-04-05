@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="NativeMethods.cs" company="(none)">
-//  Copyright (c) 2009 John Gietzen
+//  Copyright © 2009 John Gietzen
 //
 //  Permission is hereby granted, free of charge, to any person obtaining
 //  a copy of this software and associated documentation files (the
@@ -35,7 +35,7 @@ namespace WinMM
     /// <summary>
     /// Provides a wrapping class for the winmm.dll 'PlaySound' functions.  This class cannot be inherited.
     /// </summary>
-    internal sealed class NativeMethods
+    public sealed class NativeMethods
     {
         /// <summary>
         /// Prevents a default instance of the NativeMethods class from being created.
@@ -92,6 +92,344 @@ namespace WinMM
         public delegate void waveInProc(IntPtr hwi, WAVEINMESSAGE uMsg, IntPtr dwInstance, IntPtr dwParam1, IntPtr dwParam2);
 
         /// <summary>
+        /// Current state of joystick buttons.
+        /// </summary>
+        public enum JOYBUTTONS
+        {
+            /// <summary>
+            /// Joystick Button 1
+            /// </summary>
+            JOY_BUTTON1 = 0x00000001,
+
+            /// <summary>
+            /// Joystick Button 2
+            /// </summary>
+            JOY_BUTTON2 = 0x00000002,
+
+            /// <summary>
+            /// Joystick Button 3
+            /// </summary>
+            JOY_BUTTON3 = 0x00000004,
+
+            /// <summary>
+            /// Joystick Button 4
+            /// </summary>
+            JOY_BUTTON4 = 0x00000008,
+
+            /// <summary>
+            /// Joystick Button 5
+            /// </summary>
+            JOY_BUTTON5 = 0x00000010,
+
+            /// <summary>
+            /// Joystick Button 6
+            /// </summary>
+            JOY_BUTTON6 = 0x00000020,
+
+            /// <summary>
+            /// Joystick Button 7
+            /// </summary>
+            JOY_BUTTON7 = 0x00000040,
+
+            /// <summary>
+            /// Joystick Button 8
+            /// </summary>
+            JOY_BUTTON8 = 0x00000080,
+
+            /// <summary>
+            /// Joystick Button 9
+            /// </summary>
+            JOY_BUTTON9 = 0x00000100,
+
+            /// <summary>
+            /// Joystick Button 10
+            /// </summary>
+            JOY_BUTTON10 = 0x00000200,
+
+            /// <summary>
+            /// Joystick Button 11
+            /// </summary>
+            JOY_BUTTON11 = 0x00000400,
+
+            /// <summary>
+            /// Joystick Button 12
+            /// </summary>
+            JOY_BUTTON12 = 0x00000800,
+
+            /// <summary>
+            /// Joystick Button 13
+            /// </summary>
+            JOY_BUTTON13 = 0x00001000,
+
+            /// <summary>
+            /// Joystick Button 14
+            /// </summary>
+            JOY_BUTTON14 = 0x00002000,
+
+            /// <summary>
+            /// Joystick Button 15
+            /// </summary>
+            JOY_BUTTON15 = 0x00004000,
+
+            /// <summary>
+            /// Joystick Button 16
+            /// </summary>
+            JOY_BUTTON16 = 0x00008000,
+
+            /// <summary>
+            /// Joystick Button 17
+            /// </summary>
+            JOY_BUTTON17 = 0x00010000,
+
+            /// <summary>
+            /// Joystick Button 18
+            /// </summary>
+            JOY_BUTTON18 = 0x00020000,
+
+            /// <summary>
+            /// Joystick Button 19
+            /// </summary>
+            JOY_BUTTON19 = 0x00040000,
+
+            /// <summary>
+            /// Joystick Button 20
+            /// </summary>
+            JOY_BUTTON20 = 0x00080000,
+
+            /// <summary>
+            /// Joystick Button 21
+            /// </summary>
+            JOY_BUTTON21 = 0x00100000,
+
+            /// <summary>
+            /// Joystick Button 22
+            /// </summary>
+            JOY_BUTTON22 = 0x00200000,
+
+            /// <summary>
+            /// Joystick Button 23
+            /// </summary>
+            JOY_BUTTON23 = 0x00400000,
+
+            /// <summary>
+            /// Joystick Button 24
+            /// </summary>
+            JOY_BUTTON24 = 0x00800000,
+
+            /// <summary>
+            /// Joystick Button 25
+            /// </summary>
+            JOY_BUTTON25 = 0x01000000,
+
+            /// <summary>
+            /// Joystick Button 26
+            /// </summary>
+            JOY_BUTTON26 = 0x02000000,
+
+            /// <summary>
+            /// Joystick Button 27
+            /// </summary>
+            JOY_BUTTON27 = 0x04000000,
+
+            /// <summary>
+            /// Joystick Button 28
+            /// </summary>
+            JOY_BUTTON28 = 0x08000000,
+
+            /// <summary>
+            /// Joystick Button 29
+            /// </summary>
+            JOY_BUTTON29 = 0x10000000,
+
+            /// <summary>
+            /// Joystick Button 30
+            /// </summary>
+            JOY_BUTTON30 = 0x20000000,
+
+            /// <summary>
+            /// Joystick Button 31
+            /// </summary>
+            JOY_BUTTON31 = 0x40000000,
+
+            /// <summary>
+            /// Joystick Button 32
+            /// </summary>
+            JOY_BUTTON32 = unchecked((int)0x80000000),
+        }
+
+        /// <summary>
+        /// Flags indicating the valid information returned in the JOYINFOEX structure.
+        /// </summary>
+        public enum JOYINFOFLAGS
+        {
+            /// <summary>
+            /// The dwXpos member contains valid data for the x-coordinate of the joystick.
+            /// </summary>
+            JOY_RETURNX        = 0x00000001,
+
+            /// <summary>
+            /// The dwYpos member contains valid data for the y-coordinate of the joystick.
+            /// </summary>
+            JOY_RETURNY        = 0x00000002,
+
+            /// <summary>
+            /// The dwZpos member contains valid data for the z-coordinate of the joystick.
+            /// </summary>
+            JOY_RETURNZ        = 0x00000004,
+
+            /// <summary>
+            /// The dwRpos member contains valid rudder pedal data. This information represents another (fourth) axis.
+            /// </summary>
+            JOY_RETURNR        = 0x00000008,
+
+            /// <summary>
+            /// The dwUpos member contains valid data for a fifth axis of the joystick, if such an axis is available, or returns zero otherwise.
+            /// </summary>
+            JOY_RETURNU        = 0x00000010,
+
+            /// <summary>
+            /// The dwVpos member contains valid data for a sixth axis of the joystick, if such an axis is available, or returns zero otherwise.
+            /// </summary>
+            JOY_RETURNV        = 0x00000020,
+
+            /// <summary>
+            /// The dwPOV member contains valid information about the point-of-view control, expressed in discrete units.
+            /// </summary>
+            JOY_RETURNPOV      = 0x00000040,
+
+            /// <summary>
+            /// The dwButtons member contains valid information about the state of each joystick button.
+            /// </summary>
+            JOY_RETURNBUTTONS  = 0x00000080,
+            
+            /// <summary>
+            /// Data stored in this structure is uncalibrated joystick readings.
+            /// </summary>
+            JOY_RETURNRAWDATA  = 0x00000100,
+
+            /// <summary>
+            /// The dwPOV member contains valid information about the point-of-view control expressed in continuous, one-hundredth degree units.
+            /// </summary>
+            JOY_RETURNPOVCTS   = 0x00000200,
+            
+            /// <summary>
+            /// Centers the joystick neutral position to the middle value of each axis of movement.
+            /// </summary>
+            JOY_RETURNCENTERED = 0x00000400,
+
+            /// <summary>
+            /// Expands the range for the neutral position of the joystick and calls this range the dead zone. The joystick driver returns a constant value for all positions in the dead zone.
+            /// </summary>
+            JOY_USEDEADZONE    = 0x00000800,
+
+            /// <summary>
+            /// Equivalent to setting all of the JOY_RETURN bits except JOY_RETURNRAWDATA.
+            /// </summary>
+            JOY_RETURNALL      = JOY_RETURNX | JOY_RETURNY | JOY_RETURNZ | JOY_RETURNR | JOY_RETURNU | JOY_RETURNV | JOY_RETURNPOV | JOY_RETURNBUTTONS,
+
+            /// <summary>
+            /// Read the joystick port even if the driver does not detect a device.
+            /// </summary>
+            JOY_CAL_READALWAYS = 0x00010000,
+
+            /// <summary>
+            /// Reads the x- and y-coordinates and place the raw values in dwXpos and dwYpos.
+            /// </summary>
+            JOY_CAL_READXYONLY = 0x00020000,
+
+            /// <summary>
+            /// Read the x-, y-, and z-coordinates and store the raw values in dwXpos, dwYpos, and dwZpos.
+            /// </summary>
+            JOY_CAL_READ3      = 0x00040000,
+
+            /// <summary>
+            /// Read the rudder information and the x-, y-, and z-coordinates and store the raw values in dwXpos, dwYpos, dwZpos, and dwRpos.
+            /// </summary>
+            JOY_CAL_READ4      = 0x00080000,
+
+            /// <summary>
+            /// Read the x-coordinate and store the raw (uncalibrated) value in dwXpos.
+            /// </summary>
+            JOY_CAL_READXONLY  = 0x00100000,
+
+            /// <summary>
+            /// Reads the y-coordinate and store the raw value in dwYpos.
+            /// </summary>
+            JOY_CAL_READYONLY  = 0x00200000,
+
+            /// <summary>
+            /// Read the rudder information and the x-, y-, z-, and u-coordinates and store the raw values in dwXpos, dwYpos, dwZpos, dwRpos, and dwUpos.
+            /// </summary>
+            JOY_CAL_READ5      = 0x00400000,
+            
+            /// <summary>
+            /// Read the raw v-axis data if a joystick mini driver is present that will provide the data. Returns zero otherwise.
+            /// </summary>
+            JOY_CAL_READ6      = 0x00800000,
+
+            /// <summary>
+            /// Read the z-coordinate and store the raw value in dwZpos.
+            /// </summary>
+            JOY_CAL_READZONLY  = 0x01000000,
+
+            /// <summary>
+            /// Read the rudder information if a joystick mini-driver is present that will provide the data and store the raw value in dwRpos. Return zero otherwise.
+            /// </summary>
+            JOY_CAL_READRONLY  = 0x02000000,
+
+            /// <summary>
+            /// Read the u-coordinate if a joystick mini-driver is present that will provide the data and store the raw value in dwUpos. Return zero otherwise.
+            /// </summary>
+            JOY_CAL_READUONLY  = 0x04000000,
+
+            /// <summary>
+            /// Read the v-coordinate if a joystick mini-driver is present that will provide the data and store the raw value in dwVpos. Return zero otherwise.
+            /// </summary>
+            JOY_CAL_READVONLY  = 0x08000000
+        }
+
+        /// <summary>
+        /// Joystick capabilities.
+        /// </summary>
+        public enum JOYCAPABILITIES
+        {
+            /// <summary>
+            /// Joystick has z-coordinate information.
+            /// </summary>
+            JOYCAPS_HASZ = 1,
+
+            /// <summary>
+            /// Joystick has rudder (fourth axis) information.
+            /// </summary>
+            JOYCAPS_HASR = 2,
+
+            /// <summary>
+            /// Joystick has u-coordinate (fifth axis) information.
+            /// </summary>
+            JOYCAPS_HASU = 4,
+
+            /// <summary>
+            /// Joystick has v-coordinate (sixth axis) information.
+            /// </summary>
+            JOYCAPS_HASV = 8,
+
+            /// <summary>
+            /// Joystick has point-of-view information.
+            /// </summary>
+            JOYCAPS_HASPOV = 16,
+
+            /// <summary>
+            /// Joystick point-of-view supports discrete values (centered, forward, backward, left, and right).
+            /// </summary>
+            JOYCAPS_POV4DIR = 32,
+
+            /// <summary>
+            /// Joystick point-of-view supports continuous degree bearings.
+            /// </summary>
+            JOYCAPS_POVCTS = 64
+        }
+        
+        /// <summary>
         /// Used with the <see cref="NativeMethods.waveOutOpen"/> command.
         /// </summary>
         [Flags]
@@ -147,6 +485,7 @@ namespace WinMM
         /// <summary>
         /// Flags supplying information about the buffer. The following values are defined:
         /// </summary>
+        [Flags]
         public enum WAVEHDRFLAGS
         {
             /// <summary>
@@ -603,37 +942,37 @@ namespace WinMM
             /// <summary>
             /// The device can change playback pitch.
             /// </summary>
-            WAVECAPS_PITCH = 1,
+            WAVECAPS_PITCH = 0x01,
 
             /// <summary>
             /// The device can change the playback rate.
             /// </summary>
-            WAVECAPS_PLAYBACKRATE = 2,
+            WAVECAPS_PLAYBACKRATE = 0x02,
 
             /// <summary>
             /// The device can change the volume.
             /// </summary>
-            WAVECAPS_VOLUME = 4,
+            WAVECAPS_VOLUME = 0x04,
 
             /// <summary>
             /// The device can change the stereo volume.
             /// </summary>
-            WAVECAPS_LRVOLUME = 8,
+            WAVECAPS_LRVOLUME = 0x08,
 
             /// <summary>
             /// The device is synchronus.
             /// </summary>
-            WAVECAPS_SYNC = 16,
+            WAVECAPS_SYNC = 0x10,
 
             /// <summary>
             /// The device supports sample accurate.
             /// </summary>
-            WAVECAPS_SAMPLEACCURATE = 32,
+            WAVECAPS_SAMPLEACCURATE = 0x20,
 
             /// <summary>
             /// The device supports direct sound writing.
             /// </summary>
-            WAVECAPS_DIRECTSOUND = 64,
+            WAVECAPS_DIRECTSOUND = 0x40,
         }
 
         /// <summary>
@@ -848,6 +1187,157 @@ namespace WinMM
         }
 
         /// <summary>
+        /// The joyConfigChanged function informs the joystick driver that the configuration has changed and should be reloaded from the registry.
+        /// </summary>
+        /// <param name="dwFlags">Reserved for future use. Must equal zero.</param>
+        /// <returns>Returns JOYERR_NOERROR if successful. Returns JOYERR_PARMS if the parameter is non-zero.</returns>
+        /// <remarks>
+        /// This function causes a window message to be sent to all top-level windows. This message may be defined by applications that need to respond to changes in joystick calibration by using RegisterWindowMessage.
+        /// </remarks>
+        [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
+        public static extern MMSYSERROR joyConfigChanged(int dwFlags);
+
+        /// <summary>
+        /// The joyGetDevCaps function queries a joystick to determine its capabilities.
+        /// </summary>
+        /// <param name="uJoyID">
+        /// Identifier of the joystick to be queried. Valid values for uJoyID range from -1 to 15. A value of -1 enables
+        /// retrieval of the szRegKey member of the JOYCAPS structure whether a device is present or not. For Windows NT 4.0,
+        /// valid values are limited to zero (JOYSTICKID1) and JOYSTICKID2.
+        /// </param>
+        /// <param name="pjc">Pointer to a JOYCAPS structure to contain the capabilities of the joystick.</param>
+        /// <param name="cbjc">Size, in bytes, of the JOYCAPS structure.</param>
+        /// <returns>
+        /// Returns JOYERR_NOERROR if successful or an error otherwise.
+        /// </returns>
+        /// <remarks>
+        /// Use the joyGetNumDevs function to determine the number of joystick devices supported by the driver.
+        /// </remarks>
+        [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
+        public static extern MMSYSERROR joyGetDevCaps(int uJoyID, IntPtr pjc, int cbjc);
+
+        /// <summary>
+        /// The joyGetNumDevs function queries the joystick driver for the number of joysticks it supports.
+        /// </summary>
+        /// <returns>
+        /// The joyGetNumDevs function returns the number of joysticks supported by the current driver or zero if no driver is installed.
+        /// </returns>
+        /// <remarks>
+        /// Use the joyGetPos function to determine whether a given joystick is physically attached to the system. If the specified joystick is not connected, joyGetPos returns a JOYERR_UNPLUGGED error value.
+        /// </remarks>
+        [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
+        public static extern int joyGetNumDevs();
+
+        /// <summary>
+        /// The joyGetPos function queries a joystick for its position and button status.
+        /// </summary>
+        /// <param name="uJoyID">Identifier of the joystick to be queried. Valid values for uJoyID range from zero (JOYSTICKID1) to 15, except for Windows NT 4.0. For Windows NT 4.0, valid values are limited to JOYSTICKID1 and JOYSTICKID2.</param>
+        /// <param name="pji">Pointer to a JOYINFO structure that contains the position and button status of the joystick.</param>
+        /// <returns>
+        /// Returns JOYERR_NOERROR if successful or an error otherwise.
+        /// </returns>
+        /// <remarks>
+        /// For devices that have four to six axes of movement, a point-of-view control, or more than four buttons, use the joyGetPosEx function.
+        /// </remarks>
+        [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
+        public static extern MMSYSERROR joyGetPos(int uJoyID, IntPtr pji);
+
+        /// <summary>
+        /// The joyGetPosEx function queries a joystick for its position and button status.
+        /// </summary>
+        /// <param name="uJoyID">Identifier of the joystick to be queried. Valid values for uJoyID range from zero (JOYSTICKID1) to 15, except for Windows NT 4.0. For Windows NT 4.0, valid values are limited to JOYSTICKID1 and JOYSTICKID2.</param>
+        /// <param name="pji">Pointer to a JOYINFOEX structure that contains extended position information and button status of the joystick. You must set the dwSize and dwFlags members or joyGetPosEx will fail. The information returned from joyGetPosEx depends on the flags you specify in dwFlags.</param>
+        /// <returns>
+        /// Returns JOYERR_NOERROR if successful or an error otherwise.
+        /// </returns>
+        /// <remarks>
+        /// This function provides access to extended devices such as rudder pedals, point-of-view hats, devices with a large number of buttons, and coordinate systems using up to six axes. For joystick devices that use three axes or fewer and have fewer than four buttons, use the joyGetPos function.
+        /// </remarks>
+        [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
+        public static extern MMSYSERROR joyGetPosEx(int uJoyID, IntPtr pji);
+
+        /// <summary>
+        /// The joyGetThreshold function queries a joystick for its current movement threshold.
+        /// </summary>
+        /// <param name="uJoyID">Identifier of the joystick. Valid values for uJoyID range from zero (JOYSTICKID1) to 15, except for Windows NT 4.0. For Windows NT 4.0, valid values are limited to JOYSTICKID1 and JOYSTICKID2</param>
+        /// <param name="puThreshold">Pointer to a variable that contains the movement threshold value.</param>
+        /// <returns>
+        /// Returns JOYERR_NOERROR if successful or an error otherwise.
+        /// </returns>
+        /// <remarks>
+        /// The movement threshold is the distance the joystick must be moved before a joystick position-change message (MM_JOY1MOVE, MM_JOY1ZMOVE, MM_JOY2MOVE, or MM_JOY2ZMOVE) is sent to a window that has captured the device. The threshold is initially zero.
+        /// </remarks>
+        [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
+        public static extern MMSYSERROR joyGetThreshold(int uJoyID, ref int puThreshold);
+
+        /// <summary>
+        /// The joyReleaseCapture function releases the specified captured joystick.
+        /// </summary>
+        /// <param name="uJoyID">Identifier of the joystick to be released. Valid values for uJoyID range from zero (JOYSTICKID1) to 15, except for Windows NT 4.0. For Windows NT 4.0, valid values are limited to JOYSTICKID1 and JOYSTICKID2.</param>
+        /// <returns>
+        /// Returns JOYERR_NOERROR if successful or an error otherwise.
+        /// </returns>
+        /// <remarks>
+        /// This method returns JOYERR_NOERROR when passed a valid joystick identifier that has not been captured.
+        /// </remarks>
+        [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
+        public static extern MMSYSERROR joyReleaseCapture(int uJoyID);
+
+        /// <summary>
+        /// The joySetCature function captures a joystick by causing its messages to be sent to the specified window.
+        /// </summary>
+        /// <param name="hwnd">Handle to the window to receive the joystick messages.</param>
+        /// <param name="uJoyID">Identifier of the joystick to be captured. Valid values for uJoyID range from zero (JOYSTICKID1) to 15, except for Windows NT 4.0. For Windows NT 4.0, valid values are limited to JOYSTICKID1 and JOYSTICKID2.</param>
+        /// <param name="uPeriod">Polling frequency, in milliseconds.</param>
+        /// <param name="fChanged">Change position flag. Specify TRUE for this parameter to send messages only when the position changes by a value greater than the joystick movement threshold. Otherwise, messages are sent at the polling frequency specified in uPeriod.</param>
+        /// <returns>
+        /// Returns JOYERR_NOERROR if successful or an error otherwise.
+        /// </returns>
+        /// <remarks>
+        /// If the specified joystick is currently captured, the function returns undefined behavior. Call the joyReleaseCapture function to release the captured joystick, or destroy the window to release the joystick automatically.
+        /// </remarks>
+        [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
+        public static extern MMSYSERROR joySetCapture(IntPtr hwnd, int uJoyID, int uPeriod, bool fChanged);
+
+        /// <summary>
+        /// The joySetThreshold function sets the movement threshold of a joystick.
+        /// </summary>
+        /// <param name="uJoyID">Identifier of the joystick. Valid values for uJoyID range from zero (JOYSTICKID1) to 15, except for Windows NT 4.0. For Windows NT 4.0, valid values are limited to JOYSTICKID1 and JOYSTICKID2.</param>
+        /// <param name="uThreshold">New movement threshold.</param>
+        /// <returns>
+        /// Returns JOYERR_NOERROR if successful or an error otherwise.
+        /// </returns>
+        /// <remarks>
+        /// The movement threshold is the distance the joystick must be moved before a joystick position-change message (MM_JOY1MOVE, MM_JOY1ZMOVE, MM_JOY2MOVE, or MM_JOY2ZMOVE) is sent to a window that has captured the device. The threshold is initially zero.
+        /// </remarks>
+        [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
+        public static extern MMSYSERROR joySetThreshold(int uJoyID, int uThreshold);
+
+        /// <summary>
+        /// A string that specifies the sound to play. The maximum length, including the null terminator, is 256 characters. If this parameter is NULL, any currently playing waveform sound is stopped. To stop a non-waveform sound, specify SND_PURGE in the fdwSound parameter.
+        /// Three flags in fdwSound (SND_ALIAS, SND_FILENAME, and SND_RESOURCE) determine whether the name is interpreted as an alias for a system event, a filename, or a resource identifier. If none of these flags are specified, PlaySound searches the registry or the WIN.INI file for an association with the specified sound name. If an association is found, the sound event is played. If no association is found in the registry, the name is interpreted as a filename.
+        /// </summary>
+        /// <param name="lpszSound"><para>A string that specifies the sound to play. The maximum length, including the null terminator, is 256 characters. If this parameter is NULL, any currently playing waveform sound is stopped. To stop a non-waveform sound, specify SND_PURGE in the fdwSound parameter.</para>Three flags in fdwSound (SND_ALIAS, SND_FILENAME, and SND_RESOURCE) determine whether the name is interpreted as an alias for a system event, a filename, or a resource identifier. If none of these flags are specified, PlaySound searches the registry or the WIN.INI file for an association with the specified sound name. If an association is found, the sound event is played. If no association is found in the registry, the name is interpreted as a filename.</param>
+        /// <param name="hmod">Handle to the executable file that contains the resource to be loaded. This parameter must be NULL unless SND_RESOURCE is specified in fdwSound.</param>
+        /// <param name="fuSound">Flags for playing the sound.</param>
+        /// <returns>Returns TRUE if successful or FALSE otherwise.</returns>
+        [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
+        public static extern int PlaySound(string lpszSound, IntPtr hmod, PLAYSOUNDFLAGS fuSound);
+
+        /// <summary>
+        /// The sndPlaySound function plays a waveform sound specified either by a filename or by an entry in the registry or the WIN.INI file. This function offers a subset of the functionality of the PlaySound function; sndPlaySound is being maintained for backward compatibility.
+        /// </summary>
+        /// <param name="lpszSound">A string that specifies the sound to play. This parameter can be either an entry in the registry or in WIN.INI that identifies a system sound, or it can be the name of a waveform-audio file. (If the function does not find the entry, the parameter is treated as a filename.) If this parameter is NULL, any currently playing sound is stopped.</param>
+        /// <param name="fuSound">Flags for playing the sound.</param>
+        /// <returns>Returns TRUE if successful or FALSE otherwise.</returns>
+        /// <remarks>
+        /// If the specified sound cannot be found, sndPlaySound plays the system default sound. If there is no system default entry in the registry or WIN.INI file, or if the default sound cannot be found, the function makes no sound and returns FALSE.
+        /// The specified sound must fit in available physical memory and be playable by an installed waveform-audio device driver. If sndPlaySound does not find the sound in the current directory, the function searches for it using the standard directory-search order.
+        /// </remarks>
+        [Obsolete, DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
+        public static extern int sndPlaySound(IntPtr lpszSound, PLAYSOUNDFLAGS fuSound);
+
+        /// <summary>
         /// Takes an <see cref="MMSYSERROR"/> code and, if it is indeed an error, throws a corresponding exception.
         /// </summary>
         /// <param name="error">The error code to check.</param>
@@ -865,15 +1355,15 @@ namespace WinMM
             MMSYSERROR pullInfoError = MMSYSERROR.MMSYSERR_ERROR;
 
             switch (source)
-            {   
+            {
                 case ErrorSource.WaveIn:
-                    pullInfoError = NativeMethods.waveInGetErrorText(error, detailsBuilder, (uint)detailsBuilder.Capacity + 1);
+                    pullInfoError = NativeMethods.waveInGetErrorText(error, detailsBuilder, detailsBuilder.Capacity + 1);
                     break;
                 case ErrorSource.WaveOut:
-                    pullInfoError = NativeMethods.waveOutGetErrorText(error, detailsBuilder, (uint)detailsBuilder.Capacity + 1);
+                    pullInfoError = NativeMethods.waveOutGetErrorText(error, detailsBuilder, detailsBuilder.Capacity + 1);
                     break;
             }
-            
+
             if (pullInfoError != MMSYSERROR.MMSYSERR_NOERROR)
             {
                 details = error.ToString() + "(" + ((int)error).ToString(CultureInfo.CurrentCulture) + ")";
@@ -906,32 +1396,6 @@ namespace WinMM
             throw new MMSystemException(details.ToString());
         }
 
-#if false
-        /// <summary>
-        /// The sndPlaySound function plays a waveform sound specified either by a filename or by an entry in the registry or the WIN.INI file. This function offers a subset of the functionality of the PlaySound function; sndPlaySound is being maintained for backward compatibility.
-        /// </summary>
-        /// <param name="lpszSound">A string that specifies the sound to play. This parameter can be either an entry in the registry or in WIN.INI that identifies a system sound, or it can be the name of a waveform-audio file. (If the function does not find the entry, the parameter is treated as a filename.) If this parameter is NULL, any currently playing sound is stopped.</param>
-        /// <param name="fuSound">Flags for playing the sound.</param>
-        /// <returns>Returns TRUE if successful or FALSE otherwise.</returns>
-        /// <remarks>
-        /// If the specified sound cannot be found, sndPlaySound plays the system default sound. If there is no system default entry in the registry or WIN.INI file, or if the default sound cannot be found, the function makes no sound and returns FALSE.
-        /// The specified sound must fit in available physical memory and be playable by an installed waveform-audio device driver. If sndPlaySound does not find the sound in the current directory, the function searches for it using the standard directory-search order.
-        /// </remarks>
-        [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern UInt32 sndPlaySound(IntPtr lpszSound, PLAYSOUNDFLAGS fuSound);
-#endif
-
-        /// <summary>
-        /// A string that specifies the sound to play. The maximum length, including the null terminator, is 256 characters. If this parameter is NULL, any currently playing waveform sound is stopped. To stop a non-waveform sound, specify SND_PURGE in the fdwSound parameter.
-        /// Three flags in fdwSound (SND_ALIAS, SND_FILENAME, and SND_RESOURCE) determine whether the name is interpreted as an alias for a system event, a filename, or a resource identifier. If none of these flags are specified, PlaySound searches the registry or the WIN.INI file for an association with the specified sound name. If an association is found, the sound event is played. If no association is found in the registry, the name is interpreted as a filename.
-        /// </summary>
-        /// <param name="lpszSound"><para>A string that specifies the sound to play. The maximum length, including the null terminator, is 256 characters. If this parameter is NULL, any currently playing waveform sound is stopped. To stop a non-waveform sound, specify SND_PURGE in the fdwSound parameter.</para>Three flags in fdwSound (SND_ALIAS, SND_FILENAME, and SND_RESOURCE) determine whether the name is interpreted as an alias for a system event, a filename, or a resource identifier. If none of these flags are specified, PlaySound searches the registry or the WIN.INI file for an association with the specified sound name. If an association is found, the sound event is played. If no association is found in the registry, the name is interpreted as a filename.</param>
-        /// <param name="hmod">Handle to the executable file that contains the resource to be loaded. This parameter must be NULL unless SND_RESOURCE is specified in fdwSound.</param>
-        /// <param name="fuSound">Flags for playing the sound.</param>
-        /// <returns>Returns TRUE if successful or FALSE otherwise.</returns>
-        [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern uint PlaySound(string lpszSound, IntPtr hmod, PLAYSOUNDFLAGS fuSound);
-
         /// <summary>
         /// The waveInAddBuffer function sends an input buffer to the given waveform-audio input device. When the buffer is filled, the application is notified.
         /// </summary>
@@ -940,7 +1404,7 @@ namespace WinMM
         /// <param name="cbwh">Size, in bytes, of the WAVEHDR structure.</param>
         /// <returns>Returns MMSYSERR_NOERROR if successful or an error otherwise.</returns>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveInAddBuffer(WaveInSafeHandle hwi, IntPtr pwh, uint cbwh);
+        public static extern MMSYSERROR waveInAddBuffer(WaveInSafeHandle hwi, IntPtr pwh, int cbwh);
 
         /// <summary>
         /// The waveInClose function closes the given waveform-audio input device.
@@ -959,7 +1423,7 @@ namespace WinMM
         /// <returns>Returns MMSYSERR_NOERROR if successful or an error otherwise.</returns>
         /// <remarks>Use this function to determine the number of waveform-audio input devices present in the system. If the value specified by the uDeviceID parameter is a device identifier, it can vary from zero to one less than the number of devices present. The WAVE_MAPPER constant can also be used as a device identifier. Only cbwic bytes (or less) of information is copied to the location pointed to by pwic. If cbwic is zero, nothing is copied and the function returns zero.</remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveInGetDevCaps(UIntPtr uDeviceID, ref WAVEINCAPS pwic, uint cbwic);
+        public static extern MMSYSERROR waveInGetDevCaps(IntPtr uDeviceID, ref WAVEINCAPS pwic, int cbwic);
 
         /// <summary>
         /// The waveInGetErrorText function retrieves a textual description of the error identified by the given error number.
@@ -970,9 +1434,8 @@ namespace WinMM
         /// <returns>Returns MMSYSERR_NOERROR if successful or an error otherwise.</returns>
         /// <remarks>If the textual error description is longer than the specified buffer, the description is truncated. The returned error string is always null-terminated. If cchText is zero, nothing is copied and the function returns zero. All error descriptions are less than MAXERRORLENGTH characters long.</remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveInGetErrorText(MMSYSERROR mmrError, StringBuilder pszText, uint cchText);
+        public static extern MMSYSERROR waveInGetErrorText(MMSYSERROR mmrError, StringBuilder pszText, int cchText);
 
-#if false
         /// <summary>
         /// The waveInGetID function gets the device identifier for the given waveform-audio input device.
         /// </summary>
@@ -980,17 +1443,15 @@ namespace WinMM
         /// <param name="puDeviceID">Pointer to a variable to be filled with the device identifier.</param>
         /// <returns>Returns MMSYSERR_NOERROR if successful or an error otherwise.</returns>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveInGetID(WaveInSafeHandle hwi, ref uint puDeviceID);
-#endif
+        public static extern MMSYSERROR waveInGetID(WaveInSafeHandle hwi, ref int puDeviceID);
 
         /// <summary>
         /// The waveInGetNumDevs function returns the number of waveform-audio input devices present in the system.
         /// </summary>
         /// <returns>Returns the number of devices. A return value of zero means that no devices are present or that an error occurred.</returns>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern uint waveInGetNumDevs();
+        public static extern int waveInGetNumDevs();
 
-#if false
         /// <summary>
         /// The waveInGetPosition function retrieves the current input position of the given waveform-audio input device.
         /// </summary>
@@ -999,21 +1460,18 @@ namespace WinMM
         /// <param name="cbmmt">Size, in bytes, of the MMTIME structure.</param>
         /// <returns>Returns MMSYSERR_NOERROR if successful or an error otherwise.</returns>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveInGetPosition(WaveInSafeHandle hwi, ref MMTIME pmmt, uint cbmmt);
-#endif
+        public static extern MMSYSERROR waveInGetPosition(WaveInSafeHandle hwi, ref MMTIME pmmt, int cbmmt);
 
-#if false
         /// <summary>
         /// The waveInMessage function sends messages to the waveform-audio input device drivers.
         /// </summary>
         /// <param name="deviceID">Identifier of the waveform device that receives the message. You must cast the device ID to the HWAVEIN handle type. If you supply a handle instead of a device ID, the function fails and returns the MMSYSERR_NOSUPPORT error code.</param>
         /// <param name="uMsg">Message to send.</param>
-        /// <param name="dwParam1">Message parameter.</param>
-        /// <param name="dwParam2">Message parameter.</param>
+        /// <param name="dwParam1">Message parameter one.</param>
+        /// <param name="dwParam2">Message parameter two.</param>
         /// <returns>Returns the value returned from the driver.</returns>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern uint waveInMessage(UIntPtr deviceID, uint uMsg, ref uint dwParam1, ref uint dwParam2);
-#endif
+        public static extern int waveInMessage(IntPtr deviceID, int uMsg, ref int dwParam1, ref int dwParam2);
 
         /// <summary>
         /// The waveInOpen function opens the given waveform-audio input device for recording.
@@ -1026,7 +1484,7 @@ namespace WinMM
         /// <param name="fdwOpen">Flags for opening the device.</param>
         /// <returns>Returns MMSYSERR_NOERROR if successful or an error otherwise.</returns>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveInOpen(ref IntPtr phwi, uint uDeviceID, ref WAVEFORMATEX pwfx, waveInProc dwCallback, IntPtr dwCallbackInstance, WAVEOPENFLAGS fdwOpen);
+        public static extern MMSYSERROR waveInOpen(ref IntPtr phwi, int uDeviceID, ref WAVEFORMATEX pwfx, waveInProc dwCallback, IntPtr dwCallbackInstance, WAVEOPENFLAGS fdwOpen);
 
         /// <summary>
         /// The waveInPrepareHeader function prepares a buffer for waveform-audio input.
@@ -1036,7 +1494,7 @@ namespace WinMM
         /// <param name="cbwh">Size, in bytes, of the WAVEHDR structure.</param>
         /// <returns>Returns MMSYSERR_NOERROR if successful or an error otherwise.</returns>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveInPrepareHeader(WaveInSafeHandle hwi, IntPtr pwh, uint cbwh);
+        public static extern MMSYSERROR waveInPrepareHeader(WaveInSafeHandle hwi, IntPtr pwh, int cbwh);
 
         /// <summary>
         /// The waveInReset function stops input on the given waveform-audio input device and resets the current position to zero. All pending buffers are marked as done and returned to the application.
@@ -1058,7 +1516,6 @@ namespace WinMM
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
         public static extern MMSYSERROR waveInStart(WaveInSafeHandle hwi);
 
-#if false
         /// <summary>
         /// The waveInStop function stops waveform-audio input.
         /// </summary>
@@ -1070,7 +1527,6 @@ namespace WinMM
         /// </remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
         public static extern MMSYSERROR waveInStop(WaveInSafeHandle hwi);
-#endif
 
         /// <summary>
         /// The waveInUnprepareHeader function cleans up the preparation performed by the waveInPrepareHeader function. This function must be called after the device driver fills a buffer and returns it to the application. You must call this function before freeing the buffer.
@@ -1084,10 +1540,8 @@ namespace WinMM
         /// <para>You must call this function before freeing the buffer. After passing a buffer to the device driver with the <see cref="waveInAddBuffer"/> function, you must wait until the driver is finished with the buffer before calling waveInUnprepareHeader. Unpreparing a buffer that has not been prepared has no effect, and the function returns zero.</para>
         /// </remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveInUnprepareHeader(WaveInSafeHandle hwi, IntPtr pwh, uint cbwh);
+        public static extern MMSYSERROR waveInUnprepareHeader(WaveInSafeHandle hwi, IntPtr pwh, int cbwh);
 
-        // TODO: Implement looping options.
-#if false
         /// <summary>
         /// The waveOutBreakLoop function breaks a loop on the given waveform-audio output device and allows playback to continue with the next block in the driver list.
         /// </summary>
@@ -1102,7 +1556,6 @@ namespace WinMM
         /// </returns>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
         public static extern MMSYSERROR waveOutBreakLoop(WaveOutSafeHandle hwo);
-#endif
 
         /// <summary>
         /// The waveOutClose function closes the given waveform-audio output device.
@@ -1130,7 +1583,7 @@ namespace WinMM
         /// is copied and the function returns zero.
         /// </remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveOutGetDevCaps(UIntPtr uDeviceID, ref WAVEOUTCAPS pwoc, uint cbwoc);
+        public static extern MMSYSERROR waveOutGetDevCaps(IntPtr uDeviceID, ref WAVEOUTCAPS pwoc, int cbwoc);
 
         /// <summary>
         /// The waveOutGetErrorText function retrieves a textual description of the error identified by the given error number.
@@ -1152,11 +1605,8 @@ namespace WinMM
         /// All error descriptions are less than MAXERRORLENGTH characters long.
         /// </remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveOutGetErrorText(MMSYSERROR mmrError, StringBuilder pszText, uint cchText);
+        public static extern MMSYSERROR waveOutGetErrorText(MMSYSERROR mmrError, StringBuilder pszText, int cchText);
 
-        // Not needed.  Chached at the WaveOut layer.
-        // maintained here for informational purposes.
-#if false
         /// <summary>
         /// The waveOutGetID function retrieves the device identifier for the given waveform-audio output device.
         /// This function is supported for backward compatibility. New applications can cast a handle of the device
@@ -1173,8 +1623,7 @@ namespace WinMM
         /// </list>
         /// </returns>
         [Obsolete, DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveOutGetID(WaveOutSafeHandle hwo, ref uint puDeviceID);
-#endif
+        public static extern MMSYSERROR waveOutGetID(WaveOutSafeHandle hwo, ref int puDeviceID);
 
         /// <summary>
         /// The waveOutGetNumDevs function retrieves the number of waveform-audio output devices present in the system.
@@ -1183,7 +1632,7 @@ namespace WinMM
         /// Returns the number of devices. A return value of zero means that no devices are present or that an error occurred.
         /// </returns>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern uint waveOutGetNumDevs();
+        public static extern int waveOutGetNumDevs();
 
         /// <summary>
         /// The waveOutGetPitch function retrieves the current pitch setting for the specified waveform-audio output device.
@@ -1212,7 +1661,7 @@ namespace WinMM
         /// the dwSupport member of the WAVEOUTCAPS structure (filled by the waveOutGetDevCaps function).
         /// </remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveOutGetPitch(WaveOutSafeHandle hwo, ref uint pdwPitch);
+        public static extern MMSYSERROR waveOutGetPitch(WaveOutSafeHandle hwo, ref int pdwPitch);
 
         /// <summary>
         /// The waveOutGetPlaybackRate function retrieves the current playback rate for the specified waveform-audio output device.
@@ -1241,10 +1690,8 @@ namespace WinMM
         /// to test the dwSupport member of the WAVEOUTCAPS structure (filled by the waveOutGetDevCaps function).
         /// </remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveOutGetPlaybackRate(WaveOutSafeHandle hwo, ref uint pdwRate);
+        public static extern MMSYSERROR waveOutGetPlaybackRate(WaveOutSafeHandle hwo, ref int pdwRate);
 
-        // TODO: Implement at the WaveOut layer.
-#if false
         /// <summary>
         /// The waveOutGetPosition function retrieves the current playback position of the given waveform-audio output device.
         /// </summary>
@@ -1265,8 +1712,7 @@ namespace WinMM
         /// supported, wType will specify an alternative format.  The position is set to zero when the device is opened or reset.
         /// </remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveOutGetPosition(WaveOutSafeHandle hwo, ref MMTIME pmmt, uint cbmmt);
-#endif
+        public static extern MMSYSERROR waveOutGetPosition(WaveOutSafeHandle hwo, ref MMTIME pmmt, int cbmmt);
 
         /// <summary>
         /// The waveOutGetVolume function retrieves the current volume level of the specified waveform-audio output device.
@@ -1301,7 +1747,7 @@ namespace WinMM
         /// same when increasing the volume level from 0x5000 to 0x6000 as it is from 0x4000 to 0x5000.
         /// </remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveOutGetVolume(WaveOutSafeHandle hwo, ref uint pdwVolume);
+        public static extern MMSYSERROR waveOutGetVolume(WaveOutSafeHandle hwo, ref int pdwVolume);
 
         /// <summary>
         /// The waveOutGetVolume function retrieves the current volume level of the specified waveform-audio output device.
@@ -1336,9 +1782,8 @@ namespace WinMM
         /// same when increasing the volume level from 0x5000 to 0x6000 as it is from 0x4000 to 0x5000.
         /// </remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveOutGetVolume(UIntPtr uDeviceID, ref uint pdwVolume);
+        public static extern MMSYSERROR waveOutGetVolume(IntPtr uDeviceID, ref int pdwVolume);
 
-#if false
         /// <summary>
         /// The waveOutMessage function sends messages to the waveform-audio output device drivers.
         /// </summary>
@@ -1347,12 +1792,11 @@ namespace WinMM
         /// If you supply a handle instead of a device ID, the function fails and returns the MMSYSERR_NOSUPPORT error code.
         /// </param>
         /// <param name="uMsg">Message to send.</param>
-        /// <param name="dwParam1">Message parameter.</param>
-        /// <param name="dwParam2">Message parameter.</param>
+        /// <param name="dwParam1">Message parameter one.</param>
+        /// <param name="dwParam2">Message parameter two.</param>
         /// <returns>Returns the value returned from the driver.</returns>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern uint waveOutMessage(UIntPtr deviceID, uint uMsg, ref uint dwParam1, ref uint dwParam2);
-#endif
+        public static extern int waveOutMessage(IntPtr deviceID, int uMsg, ref int dwParam1, ref int dwParam2);
 
         /// <summary>
         /// The waveOutOpen function opens the given waveform-audio output device for playback.
@@ -1386,7 +1830,7 @@ namespace WinMM
         /// If you choose to have a function receive callback information, the following messages are sent to the function to indicate the progress of waveform-audio output: WOM_OPEN, WOM_CLOSE, and WOM_DONE. 
         /// </remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveOutOpen(ref IntPtr phwo, uint uDeviceID, ref WAVEFORMATEX pwfx, waveOutProc dwCallback, IntPtr dwCallbackInstance, WAVEOPENFLAGS dwFlags);
+        public static extern MMSYSERROR waveOutOpen(ref IntPtr phwo, int uDeviceID, ref WAVEFORMATEX pwfx, waveOutProc dwCallback, IntPtr dwCallbackInstance, WAVEOPENFLAGS dwFlags);
 
         /// <summary>
         /// The waveOutPause function pauses playback on the given waveform-audio output device. The current position is saved.
@@ -1432,7 +1876,7 @@ namespace WinMM
         /// Preparing a header that has already been prepared has no effect, and the function returns zero.
         /// </remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveOutPrepareHeader(WaveOutSafeHandle hwo, IntPtr pwh, uint cbwh);
+        public static extern MMSYSERROR waveOutPrepareHeader(WaveOutSafeHandle hwo, IntPtr pwh, int cbwh);
 
         /// <summary>
         /// The waveOutReset function stops playback on the given waveform-audio output device and resets the current
@@ -1488,7 +1932,7 @@ namespace WinMM
         /// Changing the pitch does not change the playback rate or the sample rate, nor does it change the playback time. Not all devices support pitch changes. To determine whether the device supports pitch control, use the WAVECAPS_PITCH flag to test the dwSupport member of the WAVEOUTCAPS structure (filled by the waveOutGetDevCaps function).
         /// </remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveOutSetPitch(WaveOutSafeHandle hwo, uint pdwPitch);
+        public static extern MMSYSERROR waveOutSetPitch(WaveOutSafeHandle hwo, int pdwPitch);
 
         /// <summary>
         /// The waveOutSetPlaybackRate function sets the playback rate for the specified waveform-audio output device.
@@ -1506,7 +1950,7 @@ namespace WinMM
         /// </returns>
         /// <remarks>Changing the playback rate does not change the sample rate but does change the playback time. Not all devices support playback rate changes. To determine whether a device supports playback rate changes, use the WAVECAPS_PLAYBACKRATE flag to test the dwSupport member of the WAVEOUTCAPS structure (filled by the waveOutGetDevCaps function).</remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveOutSetPlaybackRate(WaveOutSafeHandle hwo, uint dwRate);
+        public static extern MMSYSERROR waveOutSetPlaybackRate(WaveOutSafeHandle hwo, int dwRate);
 
         /// <summary>
         /// The waveOutSetVolume function sets the volume level of the specified waveform-audio  output device.
@@ -1529,7 +1973,7 @@ namespace WinMM
         /// Volume settings are interpreted logarithmically. This means the perceived increase in volume is the same when increasing the volume level from 0x5000 to 0x6000 as it is from 0x4000 to 0x5000.
         /// </remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveOutSetVolume(WaveOutSafeHandle hwo, uint dwVolume);
+        public static extern MMSYSERROR waveOutSetVolume(WaveOutSafeHandle hwo, int dwVolume);
 
         /// <summary>
         /// The waveOutSetVolume function sets the volume level of the specified waveform-audio  output device.
@@ -1552,7 +1996,7 @@ namespace WinMM
         /// Volume settings are interpreted logarithmically. This means the perceived increase in volume is the same when increasing the volume level from 0x5000 to 0x6000 as it is from 0x4000 to 0x5000.
         /// </remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveOutSetVolume(UIntPtr uDeviceID, uint dwVolume);
+        public static extern MMSYSERROR waveOutSetVolume(IntPtr uDeviceID, int dwVolume);
 
         /// <summary>
         /// The waveOutUnprepareHeader function cleans up the preparation performed by the <see cref="waveOutPrepareHeader"/> function. This function must be called after the device driver is finished with a data block. You must call this function before freeing the buffer.
@@ -1574,7 +2018,7 @@ namespace WinMM
         /// Unpreparing a buffer that has not been prepared has no effect, and the function returns zero.
         /// </remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveOutUnprepareHeader(WaveOutSafeHandle hwo, IntPtr pwh, uint cbwh);
+        public static extern MMSYSERROR waveOutUnprepareHeader(WaveOutSafeHandle hwo, IntPtr pwh, int cbwh);
 
         /// <summary>
         /// The waveOutWrite function sends a data block to the given waveform-audio output device.
@@ -1596,28 +2040,257 @@ namespace WinMM
         /// The buffer must be prepared with the waveOutPrepareHeader function before it is passed to waveOutWrite. Unless the device is paused by calling the waveOutPause function, playback begins when the first data block is sent to the device.
         /// </remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveOutWrite(WaveOutSafeHandle hwo, IntPtr pwh, uint cbwh);
+        public static extern MMSYSERROR waveOutWrite(WaveOutSafeHandle hwo, IntPtr pwh, int cbwh);
+
+        /// <summary>
+        /// The JOYCAPS structure contains information about the joystick capabilities.
+        /// </summary>
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        public struct JOYCAPS
+        { 
+            /// <summary>
+            /// Manufacturer identifier.
+            /// </summary>
+            public short wMid; 
+            
+            /// <summary>
+            /// Product identifier.
+            /// </summary>
+            public short wPid; 
+            
+            /// <summary>
+            /// Null-terminated string containing the joystick product name.
+            /// </summary>
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string szPname; 
+            
+            /// <summary>
+            /// Minimum X-coordinate.
+            /// </summary>
+            public int wXmin; 
+
+            /// <summary>
+            /// Maximum X-coordinate.
+            /// </summary>
+            public int wXmax; 
+
+            /// <summary>
+            /// Minimum Y-coordinate.
+            /// </summary>
+            public int wYmin; 
+
+            /// <summary>
+            /// Maximum Y-coordinate.
+            /// </summary>
+            public int wYmax; 
+
+            /// <summary>
+            /// Minimum Z-coordinate.
+            /// </summary>
+            public int wZmin; 
+
+            /// <summary>
+            /// Maximum Z-coordinate.
+            /// </summary>
+            public int wZmax;
+
+            /// <summary>
+            /// Number of joystick buttons.
+            /// </summary>
+            public int wNumButtons;
+
+            /// <summary>
+            /// Smallest polling frequency supported when captured by the joySetCapture function.
+            /// </summary>
+            public int wPeriodMin;
+
+            /// <summary>
+            /// Largest polling frequency supported when captured by joySetCapture.
+            /// </summary>
+            public int wPeriodMax;
+
+            /// <summary>
+            /// Minimum rudder value. The rudder is a fourth axis of movement.
+            /// </summary>
+            public int wRmin;
+
+            /// <summary>
+            /// Maximum rudder value. The rudder is a fourth axis of movement.
+            /// </summary>
+            public int wRmax;
+
+            /// <summary>
+            /// Minimum u-coordinate (fifth axis) values.
+            /// </summary>
+            public int wUmin;
+            
+            /// <summary>
+            /// Maximum u-coordinate (fifth axis) values.
+            /// </summary>
+            public int wUmax;
+            
+            /// <summary>
+            /// Minimum v-coordinate (sixth axis) values.
+            /// </summary>
+            public int wVmin;
+            
+            /// <summary>
+            /// Maximum v-coordinate (sixth axis) values.
+            /// </summary>
+            public int wVmax;
+            
+            /// <summary>
+            /// Joystick capabilities.
+            /// </summary>
+            public JOYCAPABILITIES wCaps;
+            
+            /// <summary>
+            /// Maximum number of axes supported by the joystick.
+            /// </summary>
+            public int wMaxAxes;
+            
+            /// <summary>
+            /// Number of axes currently in use by the joystick.
+            /// </summary>
+            public int wNumAxes;
+            
+            /// <summary>
+            /// Maximum number of buttons supported by the joystick.
+            /// </summary>
+            public int wMaxButtons;
+            
+            /// <summary>
+            /// Null-terminated string containing the registry key for the joystick.
+            /// </summary>
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string szRegKey;
+            
+            /// <summary>
+            /// Null-terminated string identifying the joystick driver OEM.
+            /// </summary>
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+            public string szOEMVxD;
+        }
+
+        /// <summary>
+        /// The JOYINFO structure contains information about the joystick position and button state.
+        /// </summary>
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        public struct JOYINFO
+        {
+            /// <summary>
+            /// Current X-coordinate.
+            /// </summary>
+            public int wXpos;
+
+            /// <summary>
+            /// Current Y-coordinate.
+            /// </summary>
+            public int wYpos;
+
+            /// <summary>
+            /// Current Z-coordinate.
+            /// </summary>
+            public int wZpos;
+
+            /// <summary>
+            /// Current state of joystick buttons.
+            /// </summary>
+            public JOYBUTTONS wButtons;
+        }
+
+        /// <summary>
+        /// The JOYINFOEX structure contains extended information about the joystick position, point-of-view position, and button state.
+        /// </summary>
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        public struct JOYINFOEX
+        { 
+            /// <summary>
+            /// Size, in bytes, of this structure.
+            /// </summary>
+            public int dwSize; 
+
+            /// <summary>
+            /// Flags indicating the valid information returned in this structure.
+            /// </summary>
+            public JOYINFOFLAGS dwFlags; 
+
+            /// <summary>
+            /// Current X-coordinate.
+            /// </summary>
+            public int dwXpos; 
+
+            /// <summary>
+            /// Current Y-coordinate.
+            /// </summary>
+            public int dwYpos; 
+
+            /// <summary>
+            /// Current Z-coordinate.
+            /// </summary>
+            public int dwZpos; 
+
+            /// <summary>
+            /// Current position of the rudder or fourth joystick axis.
+            /// </summary>
+            public int dwRpos; 
+
+            /// <summary>
+            /// Current fifth axis position.
+            /// </summary>
+            public int dwUpos; 
+
+            /// <summary>
+            /// Current sixth axis position.
+            /// </summary>
+            public int dwVpos; 
+
+            /// <summary>
+            /// Current state of the 32 joystick buttons. The value of this member can be set to any combination of JOY_BUTTONn flags, where n is a value in the range of 1 through 32 corresponding to the button that is pressed.
+            /// </summary>
+            public JOYBUTTONS dwButtons; 
+
+            /// <summary>
+            /// Current button number that is pressed.
+            /// </summary>
+            public int dwButtonNumber; 
+
+            /// <summary>
+            /// Current position of the point-of-view control. Values for this member are in the range 0 through 35,900. These values represent the angle, in degrees, of each view multiplied by 100.
+            /// </summary>
+            public int dwPOV; 
+
+            /// <summary>
+            /// Reserved one; do not use.
+            /// </summary>
+            public int dwReserved1; 
+
+            /// <summary>
+            /// Reserved two; do not use.
+            /// </summary>
+            public int dwReserved2; 
+        }
 
         /// <summary>
         /// The WAVEOUTCAPS structure describes the capabilities of a waveform-audio output device.
         /// </summary>
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        internal struct WAVEOUTCAPS
+        public struct WAVEOUTCAPS
         {
             /// <summary>
             /// Specifies the manufacturer id of the device.
             /// </summary>
-            public ushort wMid;
+            public short wMid;
 
             /// <summary>
             /// Specifies the product id of the device.
             /// </summary>
-            public ushort wPid;
+            public short wPid;
 
             /// <summary>
             /// Specifies the version of the device's driver.
             /// </summary>
-            public uint vDriverVersion;
+            public int vDriverVersion;
 
             /// <summary>
             /// Specifies the name of the device.
@@ -1633,12 +2306,12 @@ namespace WinMM
             /// <summary>
             /// Specifies the number of channels the device supports.
             /// </summary>
-            public ushort wChannels;
+            public short wChannels;
 
             /// <summary>
             /// Unused.  Padding.
             /// </summary>
-            public ushort wReserved1;
+            public short wReserved1;
 
             /// <summary>
             /// Specifies the features that the device supports.
@@ -1650,22 +2323,22 @@ namespace WinMM
         /// The WAVEINCAPS structure describes the capabilities of a waveform-audio input device.
         /// </summary>
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        internal struct WAVEINCAPS
+        public struct WAVEINCAPS
         {
             /// <summary>
             /// The ManufacturerID.
             /// </summary>
-            public ushort wMid;
+            public short wMid;
 
             /// <summary>
             /// The ProductID.
             /// </summary>
-            public ushort wPid;
+            public short wPid;
 
             /// <summary>
             /// The device's driver version.
             /// </summary>
-            public uint vDriverVersion;
+            public int vDriverVersion;
 
             /// <summary>
             /// The name of the device.
@@ -1676,24 +2349,24 @@ namespace WinMM
             /// <summary>
             /// The formats the device supports.
             /// </summary>
-            public uint dwFormats;
+            public int dwFormats;
 
             /// <summary>
             /// The number of channels the device supports.
             /// </summary>
-            public ushort wChannels;
+            public short wChannels;
 
             /// <summary>
             /// Reserved for internal use.
             /// </summary>
-            public ushort wReserved1;
+            public short wReserved1;
         }
 
         /// <summary>
         /// The WAVEHDR structure defines the header used to identify a waveform-audio buffer.
         /// </summary>
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        internal struct WAVEHDR
+        public struct WAVEHDR
         {
             /// <summary>
             /// Pointer to the waveform buffer.
@@ -1703,12 +2376,12 @@ namespace WinMM
             /// <summary>
             /// Length, in bytes, of the buffer.
             /// </summary>
-            public uint dwBufferLength;
+            public int dwBufferLength;
 
             /// <summary>
             /// When the header is used in input, this member specifies how much data is in the buffer.
             /// </summary>
-            public uint dwBytesRecorded;
+            public int dwBytesRecorded;
 
             /// <summary>
             /// User data.
@@ -1723,7 +2396,7 @@ namespace WinMM
             /// <summary>
             /// Number of times to play the loop. This member is used only with output buffers.
             /// </summary>
-            public uint dwLoops;
+            public int dwLoops;
 
             /// <summary>
             /// Reserved for internal use.
@@ -1733,14 +2406,14 @@ namespace WinMM
             /// <summary>
             /// Reserved for internal use.
             /// </summary>
-            public uint reserved;
+            public int reserved;
         }
 
         /// <summary>
         /// Describes the full format of a wave formatted stream.
         /// </summary>
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        internal struct WAVEFORMATEX
+        public struct WAVEFORMATEX
         {
             /// <summary>
             /// The wave format of the stream.
@@ -1782,7 +2455,7 @@ namespace WinMM
         /// Describes the full format of a wave formatted stream.
         /// </summary>
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        internal struct WAVEFORMATEXTENSIBLE
+        public struct WAVEFORMATEXTENSIBLE
         {
             /// <summary>
             /// The wave format of the stream.
@@ -1822,12 +2495,12 @@ namespace WinMM
             /// <summary>
             /// The number of valid bits per sample.
             /// </summary>
-            public ushort wValidBitsPerSample;
+            public short wValidBitsPerSample;
 
             /// <summary>
             /// The channel mask.
             /// </summary>
-            public uint dwChannelMask;
+            public int dwChannelMask;
 
             /// <summary>
             /// The sub format identifier.
@@ -1839,22 +2512,22 @@ namespace WinMM
         /// The MMTIME structure contains timing information for different types of multimedia data.
         /// </summary>
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        internal struct MMTIME
+        public struct MMTIME
         {
             /// <summary>
             /// Time format.
             /// </summary>
-            public uint wType;
+            public int wType;
 
             /// <summary>
             /// The first part of the data.
             /// </summary>
-            public uint wData1;
+            public int wData1;
 
             /// <summary>
             /// The second part of the data.
             /// </summary>
-            public uint wData2;
+            public int wData2;
         }
     }
 }
