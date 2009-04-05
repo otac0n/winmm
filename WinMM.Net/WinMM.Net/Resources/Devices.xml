@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<devices>
+<manufacturer id="1" name="Microsoft Corporation"></manufacturer>
+<manufacturer id="2" name="Creative Labs, Inc"></manufacturer>
+<manufacturer id="3" name="Media Vision, Inc."></manufacturer>
+<manufacturer id="4" name="Fujitsu Corp."></manufacturer>
+<manufacturer id="20" name="Artisoft, Inc."></manufacturer>
+<manufacturer id="21" name="Turtle Beach, Inc."></manufacturer>
+<manufacturer id="22" name="IBM Corporation"></manufacturer>
+<manufacturer id="23" name="Vocaltec LTD."></manufacturer>
+<manufacturer id="24" name="Roland"></manufacturer>
+<manufacturer id="25" name="DSP Solutions, Inc."></manufacturer>
+<manufacturer id="26" name="NEC"></manufacturer>
+<manufacturer id="27" name="ATI"></manufacturer>
+<manufacturer id="28" name="Wang Laboratories, Inc"></manufacturer>
+<manufacturer id="29" name="Tandy Corporation"></manufacturer>
+<manufacturer id="30" name="Voyetra"></manufacturer>
+<manufacturer id="31" name="Antex Electronics Corporation"></manufacturer>
+<manufacturer id="32" name="ICL Personal Systems"></manufacturer>
+<manufacturer id="33" name="Intel Corporation"></manufacturer>
+<manufacturer id="34" name="Advanced Gravis"></manufacturer>
+<manufacturer id="35" name="Video Associates Labs, Inc."></manufacturer>
+<manufacturer id="36" name="InterActive Inc"></manufacturer>
+<manufacturer id="37" name="Yamaha Corporation of America"></manufacturer>
+<manufacturer id="38" name="Everex Systems, Inc"></manufacturer>
+<manufacturer id="39" name="Echo Speech Corporation"></manufacturer>
+<manufacturer id="40" name="Sierra Semiconductor Corp"></manufacturer>
+<manufacturer id="41" name="Computer Aided Technologies"></manufacturer>
+<manufacturer id="42" name="APPS Software International"></manufacturer>
+<manufacturer id="43" name="DSP Group, Inc"></manufacturer>
+<manufacturer id="44" name="microEngineering Labs"></manufacturer>
+<manufacturer id="45" name="Computer Friends, Inc."></manufacturer>
+<manufacturer id="46" name="ESS Technology"></manufacturer>
+<manufacturer id="47" name="Audio, Inc."></manufacturer>
+<manufacturer id="48" name="Motorola, Inc."></manufacturer>
+<manufacturer id="49" name="Canopus, co., Ltd."></manufacturer>
+<manufacturer id="50" name="Seiko Epson Corporation"></manufacturer>
+<manufacturer id="51" name="Truevision"></manufacturer>
+<manufacturer id="52" name="Aztech Labs, Inc."></manufacturer>
+<manufacturer id="53" name="Videologic"></manufacturer>
+<manufacturer id="54" name="SCALACS"></manufacturer>
+<manufacturer id="55" name="Korg Inc."></manufacturer>
+<manufacturer id="56" name="Audio Processing Technology"></manufacturer>
+<manufacturer id="57" name="Integrated Circuit Systems, Inc."></manufacturer>
+<manufacturer id="58" name="Iterated Systems, Inc."></manufacturer>
+<manufacturer id="59" name="Metheus"></manufacturer>
+<manufacturer id="60" name="Logitech, Inc."></manufacturer>
+<manufacturer id="61" name="Winnov, Inc."></manufacturer>
+<manufacturer id="62" name="NCR Corporation"></manufacturer>
+<manufacturer id="63" name="EXAN"></manufacturer>
+<manufacturer id="64" name="AST Research Inc."></manufacturer>
+<manufacturer id="65" name="Willow Pond Corporation"></manufacturer>
+<manufacturer id="66" name="Sonic Foundry"></manufacturer>
+<manufacturer id="67" name="Vitec Multimedia"></manufacturer>
+<manufacturer id="68" name="MOSCOM Corporation"></manufacturer>
+<manufacturer id="69" name="Silicon Soft, Inc."></manufacturer>
+<manufacturer id="73" name="Supermac"></manufacturer>
+<manufacturer id="74" name="Audio Processing Technology"></manufacturer>
+<manufacturer id="76" name="Speech Compression"></manufacturer>
+<manufacturer id="77" name="Ahead, Inc."></manufacturer>
+<manufacturer id="78" name="Dolby Laboratories"></manufacturer>
+<manufacturer id="79" name="OKI"></manufacturer>
+<manufacturer id="80" name="AuraVision Corporation"></manufacturer>
+<manufacturer id="81" name="Ing C. Olivetti &amp; C., S.p.A."></manufacturer>
+<manufacturer id="82" name="I/O Magic Corporation"></manufacturer>
+<manufacturer id="83" name="Matsushita Electric Industrial Co., LTD."></manufacturer>
+<manufacturer id="84" name="Control Resources Limited"></manufacturer>
+<manufacturer id="85" name="Xebec Multimedia Solutions Limited"></manufacturer>
+<manufacturer id="86" name="New Media Corporation"></manufacturer>
+<manufacturer id="87" name="Natural MicroSystems"></manufacturer>
+<manufacturer id="88" name="Lyrrus Inc."></manufacturer>
+<manufacturer id="89" name="Compusic"></manufacturer>
+<manufacturer id="90" name="OPTi Computers Inc."></manufacturer>
+<manufacturer id="91" name="Adlib Accessories Inc."></manufacturer>
+<manufacturer id="92" name="Compaq Computer Corp."></manufacturer>
+<manufacturer id="93" name="Dialogic Corporation"></manufacturer>
+<manufacturer id="94" name="InSoft, Inc."></manufacturer>
+<manufacturer id="95" name="M.P. Technologies, Inc."></manufacturer>
+<manufacturer id="96" name="Weitek"></manufacturer>
+<manufacturer id="97" name="Lernout &amp; Hauspie"></manufacturer>
+<manufacturer id="98" name="Quanta Computer Inc."></manufacturer>
+<manufacturer id="99" name="Apple Computer, Inc."></manufacturer>
+<manufacturer id="100" name="Digital Equipment Corporation"></manufacturer>
+<manufacturer id="101" name="Mark of the Unicorn"></manufacturer>
+<manufacturer id="102" name="Workbit Corporation"></manufacturer>
+<manufacturer id="103" name="Ositech Communications Inc."></manufacturer>
+<manufacturer id="104" name="miro Computer Products AG"></manufacturer>
+<manufacturer id="105" name="Cirrus Logic"></manufacturer>
+<manufacturer id="106" name="ISOLUTION  B.V."></manufacturer>
+<manufacturer id="107" name="Horizons Technology, Inc"></manufacturer>
+<manufacturer id="108" name="Computer Concepts Ltd"></manufacturer>
+<manufacturer id="109" name="Voice Technologies Group, Inc."></manufacturer>
+<manufacturer id="110" name="Radius"></manufacturer>
+<manufacturer id="111" name="Rockwell International"></manufacturer>
+<manufacturer id="112" name="Co. XYZ for testing"></manufacturer>
+<manufacturer id="113" name="Opcode Systems"></manufacturer>
+<manufacturer id="114" name="Voxware Inc"></manufacturer>
+<manufacturer id="115" name="Northern Telecom Limited"></manufacturer>
+<manufacturer id="116" name="APICOM"></manufacturer>
+<manufacturer id="117" name="Grande Software"></manufacturer>
+<manufacturer id="118" name="ADDX"></manufacturer>
+<manufacturer id="119" name="Wildcat Canyon Software"></manufacturer>
+<manufacturer id="120" name="Rhetorex Inc"></manufacturer>
+<manufacturer id="121" name="Brooktree Corporation"></manufacturer>
+<manufacturer id="125" name="ENSONIQ Corporation"></manufacturer>
+<manufacturer id="126" name="///FAST Multimedia AG"></manufacturer>
+<manufacturer id="127" name="NVidia Corporation"></manufacturer>
+<manufacturer id="128" name="OKSORI Co., Ltd."></manufacturer>
+<manufacturer id="129" name="DiAcoustics, Inc."></manufacturer>
+<manufacturer id="130" name="Gulbransen, Inc."></manufacturer>
+<manufacturer id="131" name="Kay Elemetrics, Inc."></manufacturer>
+<manufacturer id="132" name="Crystal Semiconductor Corporation"></manufacturer>
+<manufacturer id="133" name="Splash Studios"></manufacturer>
+<manufacturer id="134" name="Quarterdeck Corporation"></manufacturer>
+<manufacturer id="135" name="TDK Corporation"></manufacturer>
+<manufacturer id="136" name="Digital Audio Labs, Inc."></manufacturer>
+<manufacturer id="137" name="Seer Systems, Inc."></manufacturer>
+<manufacturer id="138" name="PictureTel Corporation"></manufacturer>
+<manufacturer id="139" name="AT&amp;T Microelectronics"></manufacturer>
+<manufacturer id="140" name="Osprey Technologies, Inc."></manufacturer>
+<manufacturer id="141" name="Mediatrix Peripherals"></manufacturer>
+<manufacturer id="142" name="SounDesignS M.C.S. Ltd."></manufacturer>
+<manufacturer id="143" name="A.L. Digital Ltd."></manufacturer>
+<manufacturer id="144" name="Spectrum Signal Processing, Inc."></manufacturer>
+<manufacturer id="145" name="Electronic Courseware Systems, Inc."></manufacturer>
+<manufacturer id="146" name="AMD"></manufacturer>
+<manufacturer id="147" name="Core Dynamics"></manufacturer>
+<manufacturer id="148" name="CANAM Computers"></manufacturer>
+<manufacturer id="149" name="Softsound, Ltd."></manufacturer>
+<manufacturer id="150" name="Norris Communications, Inc."></manufacturer>
+<manufacturer id="151" name="Danka Data Devices"></manufacturer>
+<manufacturer id="152" name="EuPhonics"></manufacturer>
+<manufacturer id="153" name="Precept Software, Inc."></manufacturer>
+<manufacturer id="154" name="Crystal Net Corporation"></manufacturer>
+<manufacturer id="155" name="Chromatic Research, Inc"></manufacturer>
+<manufacturer id="156" name="Voice Information Systems, Inc"></manufacturer>
+<manufacturer id="157" name="Vienna Systems"></manufacturer>
+<manufacturer id="158" name="Connectix Corporation"></manufacturer>
+<manufacturer id="159" name="Gadget Labs LLC"></manufacturer>
+<manufacturer id="160" name="Frontier Design Group LLC"></manufacturer>
+<manufacturer id="161" name="Viona Development GmbH"></manufacturer>
+<manufacturer id="162" name="Casio Computer Co., LTD"></manufacturer>
+<manufacturer id="163" name="Diamond Multimedia"></manufacturer>
+<manufacturer id="164" name="S3"></manufacturer>
+<manufacturer id="172" name="Fraunhofer"></manufacturer>
+</devices>
