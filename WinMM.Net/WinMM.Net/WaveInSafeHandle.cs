@@ -61,8 +61,8 @@ namespace WinMM
         {
             if (!this.IsClosed)
             {
-                NativeMethods.MMSYSERROR ret = NativeMethods.waveInClose(this);
-                return ret == NativeMethods.MMSYSERROR.MMSYSERR_NOERROR;
+                MMSYSERROR ret = NativeMethods.waveInClose(this);
+                return ret == MMSYSERROR.MMSYSERR_NOERROR;
             }
             else
             {

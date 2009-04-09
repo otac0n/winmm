@@ -33,6 +33,1291 @@ namespace WinMM
     using System.Text;
 
     /// <summary>
+    /// The waveOutProc function is the callback function used with the waveform-audio output device. The waveOutProc
+    /// function is a placeholder for the application-defined function name. The address of this function can be specified
+    /// in the callback-address parameter of the waveOutOpen function.
+    /// </summary>
+    /// <param name="hwo">Handle to the waveform-audio device associated with the callback.</param>
+    /// <param name="uMsg">
+    /// Waveform-audio output message. It can be one of the following values.
+    /// <list type="Messages">
+    /// <item>WOM_CLOSE (Sent when the device is closed using the waveOutClose function.)</item>
+    /// <item>WOM_DONE (Sent when the device driver is finished with a data block sent using the waveOutWrite function.)</item>
+    /// <item>WOM_OPEN (Sent when the device is opened using the waveOutOpen function.)</item>
+    /// </list>
+    /// </param>
+    /// <param name="dwInstance">User-instance data specified with waveOutOpen.</param>
+    /// <param name="dwParam1">Message parameter one.</param>
+    /// <param name="dwParam2">Message parameter two.</param>
+    /// <remarks>
+    /// Applications should not call any system-defined functions from inside a callback function, except for
+    /// <list type="Acceptable Calls">
+    /// <item>EnterCriticalSection</item>
+    /// <item>LeaveCriticalSection</item>
+    /// <item>midiOutLongMsg</item>
+    /// <item>midiOutShortMsg</item>
+    /// <item>OutputDebugString</item>
+    /// <item>PostMessage</item>
+    /// <item>PostThreadMessage</item>
+    /// <item>SetEvent</item>
+    /// <item>timeGetSystemTime</item>
+    /// <item>timeGetTime</item>
+    /// <item>timeKillEvent</item>
+    /// <item>timeSetEvent</item>
+    /// </list>
+    /// Calling other wave functions will cause deadlock.
+    /// </remarks>
+    public delegate void WaveOutProc(IntPtr hwo, WaveOutMessage uMsg, IntPtr dwInstance, IntPtr dwParam1, IntPtr dwParam2);
+
+    /// <summary>
+    /// The waveInProc function is the callback function used with the waveform-audio input device. This function is a placeholder for the application-defined function name. The address of this function can be specified in the callback-address parameter of the waveInOpen function.
+    /// </summary>
+    /// <param name="hwi">Handle to the waveform-audio device associated with the callback function.</param>
+    /// <param name="uMsg">Waveform-audio input message.</param>
+    /// <param name="dwInstance">User instance data specified with waveInOpen.</param>
+    /// <param name="dwParam1">Message parameter one.</param>
+    /// <param name="dwParam2">Message parameter two.</param>
+    public delegate void WaveInProc(IntPtr hwi, WaveInMessage uMsg, IntPtr dwInstance, IntPtr dwParam1, IntPtr dwParam2);
+
+    /// <summary>
+    /// The JOYCAPS structure contains information about the joystick capabilities.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct JoystickCapabilities
+    {
+        /// <summary>
+        /// Manufacturer identifier.
+        /// </summary>
+        public short wMid;
+
+        /// <summary>
+        /// Product identifier.
+        /// </summary>
+        public short wPid;
+
+        /// <summary>
+        /// Null-terminated string containing the joystick product name.
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        public string szPname;
+
+        /// <summary>
+        /// Minimum X-coordinate.
+        /// </summary>
+        public int wXmin;
+
+        /// <summary>
+        /// Maximum X-coordinate.
+        /// </summary>
+        public int wXmax;
+
+        /// <summary>
+        /// Minimum Y-coordinate.
+        /// </summary>
+        public int wYmin;
+
+        /// <summary>
+        /// Maximum Y-coordinate.
+        /// </summary>
+        public int wYmax;
+
+        /// <summary>
+        /// Minimum Z-coordinate.
+        /// </summary>
+        public int wZmin;
+
+        /// <summary>
+        /// Maximum Z-coordinate.
+        /// </summary>
+        public int wZmax;
+
+        /// <summary>
+        /// Number of joystick buttons.
+        /// </summary>
+        public int wNumButtons;
+
+        /// <summary>
+        /// Smallest polling frequency supported when captured by the joySetCapture function.
+        /// </summary>
+        public int wPeriodMin;
+
+        /// <summary>
+        /// Largest polling frequency supported when captured by joySetCapture.
+        /// </summary>
+        public int wPeriodMax;
+
+        /// <summary>
+        /// Minimum rudder value. The rudder is a fourth axis of movement.
+        /// </summary>
+        public int wRmin;
+
+        /// <summary>
+        /// Maximum rudder value. The rudder is a fourth axis of movement.
+        /// </summary>
+        public int wRmax;
+
+        /// <summary>
+        /// Minimum u-coordinate (fifth axis) values.
+        /// </summary>
+        public int wUmin;
+
+        /// <summary>
+        /// Maximum u-coordinate (fifth axis) values.
+        /// </summary>
+        public int wUmax;
+
+        /// <summary>
+        /// Minimum v-coordinate (sixth axis) values.
+        /// </summary>
+        public int wVmin;
+
+        /// <summary>
+        /// Maximum v-coordinate (sixth axis) values.
+        /// </summary>
+        public int wVmax;
+
+        /// <summary>
+        /// Joystick capabilities.
+        /// </summary>
+        public JoystickCapabilityFlags wCaps;
+
+        /// <summary>
+        /// Maximum number of axes supported by the joystick.
+        /// </summary>
+        public int wMaxAxes;
+
+        /// <summary>
+        /// Number of axes currently in use by the joystick.
+        /// </summary>
+        public int wNumAxes;
+
+        /// <summary>
+        /// Maximum number of buttons supported by the joystick.
+        /// </summary>
+        public int wMaxButtons;
+
+        /// <summary>
+        /// Null-terminated string containing the registry key for the joystick.
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        public string szRegKey;
+
+        /// <summary>
+        /// Null-terminated string identifying the joystick driver OEM.
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+        public string szOEMVxD;
+    }
+
+    /// <summary>
+    /// The JOYINFO structure contains information about the joystick position and button state.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct JOYINFO
+    {
+        /// <summary>
+        /// Current X-coordinate.
+        /// </summary>
+        public int wXpos;
+
+        /// <summary>
+        /// Current Y-coordinate.
+        /// </summary>
+        public int wYpos;
+
+        /// <summary>
+        /// Current Z-coordinate.
+        /// </summary>
+        public int wZpos;
+
+        /// <summary>
+        /// Current state of joystick buttons.
+        /// </summary>
+        public JoystickButtons wButtons;
+    }
+
+    /// <summary>
+    /// The JOYINFOEX structure contains extended information about the joystick position, point-of-view position, and button state.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct JOYINFOEX
+    {
+        /// <summary>
+        /// Size, in bytes, of this structure.
+        /// </summary>
+        public int dwSize;
+
+        /// <summary>
+        /// Flags indicating the valid information returned in this structure.
+        /// </summary>
+        public JOYINFOFLAGS dwFlags;
+
+        /// <summary>
+        /// Current X-coordinate.
+        /// </summary>
+        public int dwXpos;
+
+        /// <summary>
+        /// Current Y-coordinate.
+        /// </summary>
+        public int dwYpos;
+
+        /// <summary>
+        /// Current Z-coordinate.
+        /// </summary>
+        public int dwZpos;
+
+        /// <summary>
+        /// Current position of the rudder or fourth joystick axis.
+        /// </summary>
+        public int dwRpos;
+
+        /// <summary>
+        /// Current fifth axis position.
+        /// </summary>
+        public int dwUpos;
+
+        /// <summary>
+        /// Current sixth axis position.
+        /// </summary>
+        public int dwVpos;
+
+        /// <summary>
+        /// Current state of the 32 joystick buttons. The value of this member can be set to any combination of JoystickButtonN flags, where n is a value in the range of 1 through 32 corresponding to the button that is pressed.
+        /// </summary>
+        public JoystickButtons dwButtons;
+
+        /// <summary>
+        /// Current button number that is pressed.
+        /// </summary>
+        public int dwButtonNumber;
+
+        /// <summary>
+        /// Current position of the point-of-view control. Values for this member are in the range 0 through 35,900. These values represent the angle, in degrees, of each view multiplied by 100.
+        /// </summary>
+        public int dwPOV;
+
+        /// <summary>
+        /// Reserved one; do not use.
+        /// </summary>
+        public int dwReserved1;
+
+        /// <summary>
+        /// Reserved two; do not use.
+        /// </summary>
+        public int dwReserved2;
+    }
+
+    /// <summary>
+    /// The WAVEOUTCAPS structure describes the capabilities of a waveform-audio output device.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct WAVEOUTCAPS
+    {
+        /// <summary>
+        /// Specifies the manufacturer id of the device.
+        /// </summary>
+        public short wMid;
+
+        /// <summary>
+        /// Specifies the product id of the device.
+        /// </summary>
+        public short wPid;
+
+        /// <summary>
+        /// Specifies the version of the device's driver.
+        /// </summary>
+        public int vDriverVersion;
+
+        /// <summary>
+        /// Specifies the name of the device.
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        public string szPname;
+
+        /// <summary>
+        /// Specifies the WAVE formats the device supports.
+        /// </summary>
+        public WaveFormats dwFormats;
+
+        /// <summary>
+        /// Specifies the number of channels the device supports.
+        /// </summary>
+        public short wChannels;
+
+        /// <summary>
+        /// Unused.  Padding.
+        /// </summary>
+        public short wReserved1;
+
+        /// <summary>
+        /// Specifies the features that the device supports.
+        /// </summary>
+        public WAVECAPS dwSupport;
+    }
+
+    /// <summary>
+    /// The WAVEINCAPS structure describes the capabilities of a waveform-audio input device.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct WAVEINCAPS
+    {
+        /// <summary>
+        /// The ManufacturerID.
+        /// </summary>
+        public short wMid;
+
+        /// <summary>
+        /// The ProductID.
+        /// </summary>
+        public short wPid;
+
+        /// <summary>
+        /// The device's driver version.
+        /// </summary>
+        public int vDriverVersion;
+
+        /// <summary>
+        /// The name of the device.
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        public string szPname;
+
+        /// <summary>
+        /// The formats the device supports.
+        /// </summary>
+        public int dwFormats;
+
+        /// <summary>
+        /// The number of channels the device supports.
+        /// </summary>
+        public short wChannels;
+
+        /// <summary>
+        /// Reserved for internal use.
+        /// </summary>
+        public short wReserved1;
+    }
+
+    /// <summary>
+    /// The WAVEHDR structure defines the header used to identify a waveform-audio buffer.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct WAVEHDR
+    {
+        /// <summary>
+        /// Pointer to the waveform buffer.
+        /// </summary>
+        public IntPtr lpData;
+
+        /// <summary>
+        /// Length, in bytes, of the buffer.
+        /// </summary>
+        public int dwBufferLength;
+
+        /// <summary>
+        /// When the header is used in input, this member specifies how much data is in the buffer.
+        /// </summary>
+        public int dwBytesRecorded;
+
+        /// <summary>
+        /// User data.
+        /// </summary>
+        public IntPtr dwUser;
+
+        /// <summary>
+        /// Flags supplying information about the buffer. The following values are defined:
+        /// </summary>
+        public WaveHeaderFlags dwFlags;
+
+        /// <summary>
+        /// Number of times to play the loop. This member is used only with output buffers.
+        /// </summary>
+        public int dwLoops;
+
+        /// <summary>
+        /// Reserved for internal use.
+        /// </summary>
+        public IntPtr lpNext;
+
+        /// <summary>
+        /// Reserved for internal use.
+        /// </summary>
+        public int reserved;
+    }
+
+    /// <summary>
+    /// Describes the full format of a wave formatted stream.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct WAVEFORMATEX
+    {
+        /// <summary>
+        /// The wave format of the stream.
+        /// </summary>
+        public short wFormatTag;
+
+        /// <summary>
+        /// The number of channels.
+        /// </summary>
+        public short nChannels;
+
+        /// <summary>
+        /// The number of samples per second.
+        /// </summary>
+        public int nSamplesPerSec;
+
+        /// <summary>
+        /// The average bytes per second.
+        /// </summary>
+        public int nAvgBytesPerSec;
+
+        /// <summary>
+        /// The smallest atomic data size.
+        /// </summary>
+        public short nBlockAlign;
+
+        /// <summary>
+        /// The number of bits per sample.
+        /// </summary>
+        public short wBitsPerSample;
+
+        /// <summary>
+        /// The remaining header size. (Must be zero in this struct format.)
+        /// </summary>
+        public short cbSize;
+    }
+
+    /// <summary>
+    /// Describes the full format of a wave formatted stream.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct WAVEFORMATEXTENSIBLE
+    {
+        /// <summary>
+        /// The wave format of the stream.
+        /// </summary>
+        public short wFormatTag;
+
+        /// <summary>
+        /// The number of channels.
+        /// </summary>
+        public short nChannels;
+
+        /// <summary>
+        /// The number of samples per second.
+        /// </summary>
+        public int nSamplesPerSec;
+
+        /// <summary>
+        /// The average bytes per second.
+        /// </summary>
+        public int nAvgBytesPerSec;
+
+        /// <summary>
+        /// The smallest atomic data size.
+        /// </summary>
+        public short nBlockAlign;
+
+        /// <summary>
+        /// The number of bits per sample.
+        /// </summary>
+        public short wBitsPerSample;
+
+        /// <summary>
+        /// The remaining header size.
+        /// </summary>
+        public short cbSize;
+
+        /// <summary>
+        /// The number of valid bits per sample.
+        /// </summary>
+        public short wValidBitsPerSample;
+
+        /// <summary>
+        /// The channel mask.
+        /// </summary>
+        public int dwChannelMask;
+
+        /// <summary>
+        /// The sub format identifier.
+        /// </summary>
+        public Guid SubFormat;
+    }
+
+    /// <summary>
+    /// The MMTIME structure contains timing information for different types of multimedia data.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public struct MMTIME
+    {
+        /// <summary>
+        /// Time format.
+        /// </summary>
+        public int wType;
+
+        /// <summary>
+        /// The first part of the data.
+        /// </summary>
+        public int wData1;
+
+        /// <summary>
+        /// The second part of the data.
+        /// </summary>
+        public int wData2;
+    }
+
+    /// <summary>
+    /// Flags indicating the valid information returned in the JOYINFOEX structure.
+    /// </summary>
+    [Flags]
+    public enum JOYINFOFLAGS
+    {
+        /// <summary>
+        /// The dwXpos member contains valid data for the x-coordinate of the joystick.
+        /// </summary>
+        JOY_RETURNX = 0x00000001,
+
+        /// <summary>
+        /// The dwYpos member contains valid data for the y-coordinate of the joystick.
+        /// </summary>
+        JOY_RETURNY = 0x00000002,
+
+        /// <summary>
+        /// The dwZpos member contains valid data for the z-coordinate of the joystick.
+        /// </summary>
+        JOY_RETURNZ = 0x00000004,
+
+        /// <summary>
+        /// The dwRpos member contains valid rudder pedal data. This information represents another (fourth) axis.
+        /// </summary>
+        JOY_RETURNR = 0x00000008,
+
+        /// <summary>
+        /// The dwUpos member contains valid data for a fifth axis of the joystick, if such an axis is available, or returns zero otherwise.
+        /// </summary>
+        JOY_RETURNU = 0x00000010,
+
+        /// <summary>
+        /// The dwVpos member contains valid data for a sixth axis of the joystick, if such an axis is available, or returns zero otherwise.
+        /// </summary>
+        JOY_RETURNV = 0x00000020,
+
+        /// <summary>
+        /// The dwPOV member contains valid information about the point-of-view control, expressed in discrete units.
+        /// </summary>
+        JOY_RETURNPOV = 0x00000040,
+
+        /// <summary>
+        /// The dwButtons member contains valid information about the state of each joystick button.
+        /// </summary>
+        JOY_RETURNBUTTONS = 0x00000080,
+
+        /// <summary>
+        /// Data stored in this structure is uncalibrated joystick readings.
+        /// </summary>
+        JOY_RETURNRAWDATA = 0x00000100,
+
+        /// <summary>
+        /// The dwPOV member contains valid information about the point-of-view control expressed in continuous, one-hundredth degree units.
+        /// </summary>
+        JOY_RETURNPOVCTS = 0x00000200,
+
+        /// <summary>
+        /// Centers the joystick neutral position to the middle value of each axis of movement.
+        /// </summary>
+        JOY_RETURNCENTERED = 0x00000400,
+
+        /// <summary>
+        /// Expands the range for the neutral position of the joystick and calls this range the dead zone. The joystick driver returns a constant value for all positions in the dead zone.
+        /// </summary>
+        JOY_USEDEADZONE = 0x00000800,
+
+        /// <summary>
+        /// Equivalent to setting all of the JOY_RETURN bits except JOY_RETURNRAWDATA.
+        /// </summary>
+        JOY_RETURNALL = JOY_RETURNX | JOY_RETURNY | JOY_RETURNZ | JOY_RETURNR | JOY_RETURNU | JOY_RETURNV | JOY_RETURNPOV | JOY_RETURNBUTTONS,
+
+        /// <summary>
+        /// Read the joystick port even if the driver does not detect a device.
+        /// </summary>
+        JOY_CAL_READALWAYS = 0x00010000,
+
+        /// <summary>
+        /// Reads the x- and y-coordinates and place the raw values in dwXpos and dwYpos.
+        /// </summary>
+        JOY_CAL_READXYONLY = 0x00020000,
+
+        /// <summary>
+        /// Read the x-, y-, and z-coordinates and store the raw values in dwXpos, dwYpos, and dwZpos.
+        /// </summary>
+        JOY_CAL_READ3 = 0x00040000,
+
+        /// <summary>
+        /// Read the rudder information and the x-, y-, and z-coordinates and store the raw values in dwXpos, dwYpos, dwZpos, and dwRpos.
+        /// </summary>
+        JOY_CAL_READ4 = 0x00080000,
+
+        /// <summary>
+        /// Read the x-coordinate and store the raw (uncalibrated) value in dwXpos.
+        /// </summary>
+        JOY_CAL_READXONLY = 0x00100000,
+
+        /// <summary>
+        /// Reads the y-coordinate and store the raw value in dwYpos.
+        /// </summary>
+        JOY_CAL_READYONLY = 0x00200000,
+
+        /// <summary>
+        /// Read the rudder information and the x-, y-, z-, and u-coordinates and store the raw values in dwXpos, dwYpos, dwZpos, dwRpos, and dwUpos.
+        /// </summary>
+        JOY_CAL_READ5 = 0x00400000,
+
+        /// <summary>
+        /// Read the raw v-axis data if a joystick mini driver is present that will provide the data. Returns zero otherwise.
+        /// </summary>
+        JOY_CAL_READ6 = 0x00800000,
+
+        /// <summary>
+        /// Read the z-coordinate and store the raw value in dwZpos.
+        /// </summary>
+        JOY_CAL_READZONLY = 0x01000000,
+
+        /// <summary>
+        /// Read the rudder information if a joystick mini-driver is present that will provide the data and store the raw value in dwRpos. Return zero otherwise.
+        /// </summary>
+        JOY_CAL_READRONLY = 0x02000000,
+
+        /// <summary>
+        /// Read the u-coordinate if a joystick mini-driver is present that will provide the data and store the raw value in dwUpos. Return zero otherwise.
+        /// </summary>
+        JOY_CAL_READUONLY = 0x04000000,
+
+        /// <summary>
+        /// Read the v-coordinate if a joystick mini-driver is present that will provide the data and store the raw value in dwVpos. Return zero otherwise.
+        /// </summary>
+        JOY_CAL_READVONLY = 0x08000000
+    }
+
+    /// <summary>
+    /// Joystick capabilities.
+    /// </summary>
+    [Flags]
+    public enum JoystickCapabilityFlags
+    {
+        /// <summary>
+        /// Joystick has z-coordinate information.
+        /// </summary>
+        HasZ = 0x01,
+
+        /// <summary>
+        /// Joystick has rudder (fourth axis) information.
+        /// </summary>
+        HasR = 0x02,
+
+        /// <summary>
+        /// Joystick has u-coordinate (fifth axis) information.
+        /// </summary>
+        HasU = 0x04,
+
+        /// <summary>
+        /// Joystick has v-coordinate (sixth axis) information.
+        /// </summary>
+        HasV = 0x08,
+
+        /// <summary>
+        /// Joystick has point-of-view information.
+        /// </summary>
+        HasPov = 0x10,
+
+        /// <summary>
+        /// Joystick point-of-view supports discrete values (centered, forward, backward, left, and right).
+        /// </summary>
+        Pov4Dir = 0x20,
+
+        /// <summary>
+        /// Joystick point-of-view supports continuous degree bearings.
+        /// </summary>
+        PovCts = 0x40
+    }
+
+    /// <summary>
+    /// Used with the <see cref="NativeMethods.waveOutOpen"/> command.
+    /// </summary>
+    [Flags]
+    public enum WaveOpenFlags
+    {
+        /// <summary>
+        /// No callback mechanism. This is the default setting.
+        /// </summary>
+        CALLBACK_NULL = 0x00000,
+
+        /// <summary>
+        /// Indicates the dwCallback parameter is a window handle.
+        /// </summary>
+        CALLBACK_WINDOW = 0x10000,
+
+        /// <summary>
+        /// The dwCallback parameter is a thread identifier.
+        /// </summary>
+        CALLBACK_THREAD = 0x20000,
+
+        /// <summary>
+        /// The dwCallback parameter is a thread identifier.
+        /// </summary>
+        [Obsolete]
+        CALLBACK_TASK = 0x20000,
+
+        /// <summary>
+        /// The dwCallback parameter is a callback procedure address.
+        /// </summary>
+        CALLBACK_FUNCTION = 0x30000,
+
+        /// <summary>
+        /// If this flag is specified, <see cref="NativeMethods.waveOutOpen"/> queries the device to determine if it supports the given format, but the device is not actually opened.
+        /// </summary>
+        WAVE_FORMAT_QUERY = 0x00001,
+
+        /// <summary>
+        /// If this flag is specified, a synchronous waveform-audio device can be opened. If this flag is not specified while opening a synchronous driver, the device will fail to open.
+        /// </summary>
+        WAVE_ALLOWSYNC = 0x00002,
+
+        /// <summary>
+        /// If this flag is specified, the uDeviceID parameter specifies a waveform-audio device to be mapped to by the wave mapper.
+        /// </summary>
+        WAVE_MAPPED = 0x00004,
+
+        /// <summary>
+        /// If this flag is specified, the ACM driver does not perform conversions on the audio data.
+        /// </summary>
+        WAVE_FORMAT_DIRECT = 0x00008
+    }
+
+    /// <summary>
+    /// Flags supplying information about the buffer. The following values are defined:
+    /// </summary>
+    [Flags]
+    public enum WaveHeaderFlags
+    {
+        /// <summary>
+        /// This buffer is the first buffer in a loop.  This flag is used only with output buffers.
+        /// </summary>
+        BeginLoop = 0x00000004,
+
+        /// <summary>
+        /// Set by the device driver to indicate that it is finished with the buffer and is returning it to the application.
+        /// </summary>
+        Done = 0x00000001,
+
+        /// <summary>
+        /// This buffer is the last buffer in a loop.  This flag is used only with output buffers.
+        /// </summary>
+        EndLoop = 0x00000008,
+
+        /// <summary>
+        /// Set by Windows to indicate that the buffer is queued for playback.
+        /// </summary>
+        InQueue = 0x00000010,
+
+        /// <summary>
+        /// Set by Windows to indicate that the buffer has been prepared with the waveInPrepareHeader or waveOutPrepareHeader function.
+        /// </summary>
+        Prepared = 0x00000002
+    }
+
+    /// <summary>
+    /// Used as a return result from many of the WinMM calls.
+    /// </summary>
+    public enum MMSYSERROR
+    {
+        /// <summary>
+        /// No Error. (Success)
+        /// </summary>
+        MMSYSERR_NOERROR = 0,
+
+        /// <summary>
+        /// Unspecified Error.
+        /// </summary>
+        MMSYSERR_ERROR = 1,
+
+        /// <summary>
+        /// Device ID out of range.
+        /// </summary>
+        MMSYSERR_BADDEVICEID = 2,
+
+        /// <summary>
+        /// Driver failed enable.
+        /// </summary>
+        MMSYSERR_NOTENABLED = 3,
+
+        /// <summary>
+        /// Device is already allocated.
+        /// </summary>
+        MMSYSERR_ALLOCATED = 4,
+
+        /// <summary>
+        /// Device handle is invalid.
+        /// </summary>
+        MMSYSERR_INVALHANDLE = 5,
+
+        /// <summary>
+        /// No device driver is present.
+        /// </summary>
+        MMSYSERR_NODRIVER = 6,
+
+        /// <summary>
+        /// In sufficient memory, or memory allocation error.
+        /// </summary>
+        MMSYSERR_NOMEM = 7,
+
+        /// <summary>
+        /// Unsupported function.
+        /// </summary>
+        MMSYSERR_NOTSUPPORTED = 8,
+
+        /// <summary>
+        /// Error value out of range.
+        /// </summary>
+        MMSYSERR_BADERRNUM = 9,
+
+        /// <summary>
+        /// Invalid flag passed.
+        /// </summary>
+        MMSYSERR_INVALFLAG = 10,
+
+        /// <summary>
+        /// Invalid parameter passed.
+        /// </summary>
+        MMSYSERR_INVALPARAM = 11,
+
+        /// <summary>
+        /// Handle being used simultaneously on another thread.
+        /// </summary>
+        MMSYSERR_HANDLEBUSY = 12,
+
+        /// <summary>
+        /// Specified alias not found.
+        /// </summary>
+        MMSYSERR_INVALIDALIAS = 13,
+
+        /// <summary>
+        /// Bad registry database.
+        /// </summary>
+        MMSYSERR_BADDB = 14,
+
+        /// <summary>
+        /// Registry key not found.
+        /// </summary>
+        MMSYSERR_KEYNOTFOUND = 15,
+
+        /// <summary>
+        /// Registry read error.
+        /// </summary>
+        MMSYSERR_READERROR = 16,
+
+        /// <summary>
+        /// Registry write error.
+        /// </summary>
+        MMSYSERR_WRITEERROR = 17,
+
+        /// <summary>
+        /// Registry delete error.
+        /// </summary>
+        MMSYSERR_DELETEERROR = 18,
+
+        /// <summary>
+        /// Registry value not found.
+        /// </summary>
+        MMSYSERR_VALNOTFOUND = 19,
+
+        /// <summary>
+        /// Driver does not call DriverCallback.
+        /// </summary>
+        MMSYSERR_NODRIVERCB = 20,
+
+        /// <summary>
+        /// More data to be returned.
+        /// </summary>
+        MMSYSERR_MOREDATA = 21,
+
+        /// <summary>
+        /// Unsupported wave format.
+        /// </summary>
+        WAVERR_BADFORMAT = 32,
+
+        /// <summary>
+        /// Still something playing.
+        /// </summary>
+        WAVERR_STILLPLAYING = 33,
+
+        /// <summary>
+        /// Header not prepared.
+        /// </summary>
+        WAVERR_UNPREPARED = 34,
+
+        /// <summary>
+        /// Device is syncronus.
+        /// </summary>
+        WAVERR_SYNC = 35,
+
+        /// <summary>
+        /// Header not prepared.
+        /// </summary>
+        MIDIERR_UNPREPARED = 64,
+
+        /// <summary>
+        /// Still something playing.
+        /// </summary>
+        MIDIERR_STILLPLAYING = 65,
+
+        /// <summary>
+        /// No configured instruments.
+        /// </summary>
+        MIDIERR_NOMAP = 66,
+
+        /// <summary>
+        /// Hardware is still busy.
+        /// </summary>
+        MIDIERR_NOTREADY = 67,
+
+        /// <summary>
+        /// Port no longer connected
+        /// </summary>
+        MIDIERR_NODEVICE = 68,
+
+        /// <summary>
+        /// Invalid MIF
+        /// </summary>
+        MIDIERR_INVALIDSETUP = 69,
+
+        /// <summary>
+        /// Operation unsupported with open mode.
+        /// </summary>
+        MIDIERR_BADOPENMODE = 70,
+
+        /// <summary>
+        /// Thru device 'eating' a message
+        /// </summary>
+        MIDIERR_DONT_CONTINUE = 71,
+
+        /// <summary>
+        /// The resolution specified in uPeriod is out of range.
+        /// </summary>
+        TIMERR_NOCANDO = 96 + 1,
+
+        /// <summary>
+        /// Time struct size
+        /// </summary>
+        TIMERR_STRUCT = 96 + 33,
+
+        /// <summary>
+        /// Bad parameters
+        /// </summary>
+        JOYERR_PARMS = 160 + 5,
+
+        /// <summary>
+        /// Request not completed
+        /// </summary>
+        JOYERR_NOCANDO = 160 + 6,
+
+        /// <summary>
+        /// Joystick is unplugged
+        /// </summary>
+        JOYERR_UNPLUGGED = 160 + 7,
+
+        /// <summary>
+        /// Invalid device ID
+        /// </summary>
+        MCIERR_INVALID_DEVICE_ID = 256 + 1,
+
+        /// <summary>
+        /// Unrecognized keyword.
+        /// </summary>
+        MCIERR_UNRECOGNIZED_KEYWORD = 256 + 3,
+
+        /// <summary>
+        /// Unrecognized command
+        /// </summary>
+        MCIERR_UNRECOGNIZED_COMMAND = 256 + 5,
+
+        /// <summary>
+        /// Hardware error
+        /// </summary>
+        MCIERR_HARDWARE = 256 + 6,
+
+        /// <summary>
+        /// Invalid device name
+        /// </summary>
+        MCIERR_INVALID_DEVICE_NAME = 256 + 7,
+
+        /// <summary>
+        /// Out of memory
+        /// </summary>
+        MCIERR_OUT_OF_MEMORY = 256 + 8,
+
+        MCIERR_DEVICE_OPEN = 256 + 9,
+
+        MCIERR_CANNOT_LOAD_DRIVER = 256 + 10,
+
+        MCIERR_MISSING_COMMAND_STRING = 256 + 11,
+
+        MCIERR_PARAM_OVERFLOW = 256 + 12,
+
+        MCIERR_MISSING_STRING_ARGUMENT = 256 + 13,
+
+        MCIERR_BAD_INTEGER = 256 + 14,
+
+        MCIERR_PARSER_INTERNAL = 256 + 15,
+
+        MCIERR_DRIVER_INTERNAL = 256 + 16,
+
+        MCIERR_MISSING_PARAMETER = 256 + 17,
+
+        MCIERR_UNSUPPORTED_FUNCTION = 256 + 18,
+
+        MCIERR_FILE_NOT_FOUND = 256 + 19,
+
+        MCIERR_DEVICE_NOT_READY = 256 + 20,
+
+        MCIERR_INTERNAL = 256 + 21,
+
+        MCIERR_DRIVER = 256 + 22,
+
+        MCIERR_CANNOT_USE_ALL = 256 + 23,
+
+        MCIERR_MULTIPLE = 256 + 24,
+
+        MCIERR_EXTENSION_NOT_FOUND = 256 + 25,
+
+        MCIERR_OUTOFRANGE = 256 + 26,
+
+        MCIERR_FLAGS_NOT_COMPATIBLE = 256 + 28,
+
+        MCIERR_FILE_NOT_SAVED = 256 + 30,
+
+        MCIERR_DEVICE_TYPE_REQUIRED = 256 + 31,
+
+        MCIERR_DEVICE_LOCKED = 256 + 32,
+
+        MCIERR_DUPLICATE_ALIAS = 256 + 33,
+
+        MCIERR_BAD_CONSTANT = 256 + 34,
+
+        MCIERR_MUST_USE_SHAREABLE = 256 + 35,
+
+        MCIERR_MISSING_DEVICE_NAME = 256 + 36,
+
+        MCIERR_BAD_TIME_FORMAT = 256 + 37,
+
+        MCIERR_NO_CLOSING_QUOTE = 256 + 38,
+
+        MCIERR_DUPLICATE_FLAGS = 256 + 39,
+
+        MCIERR_INVALID_FILE = 256 + 40,
+
+        MCIERR_NULL_PARAMETER_BLOCK = 256 + 41,
+
+        MCIERR_UNNAMED_RESOURCE = 256 + 42,
+
+        MCIERR_NEW_REQUIRES_ALIAS = 256 + 43,
+
+        MCIERR_NOTIFY_ON_AUTO_OPEN = 256 + 44,
+
+        MCIERR_NO_ELEMENT_ALLOWED = 256 + 45,
+
+        MCIERR_NONAPPLICABLE_FUNCTION = 256 + 46,
+
+        MCIERR_ILLEGAL_FOR_AUTO_OPEN = 256 + 47,
+
+        MCIERR_FILENAME_REQUIRED = 256 + 48,
+
+        MCIERR_EXTRA_CHARACTERS = 256 + 49,
+
+        MCIERR_DEVICE_NOT_INSTALLED = 256 + 50,
+
+        MCIERR_GET_CD = 256 + 51,
+
+        MCIERR_SET_CD = 256 + 52,
+
+        MCIERR_SET_DRIVE = 256 + 53,
+
+        MCIERR_DEVICE_LENGTH = 256 + 54,
+
+        MCIERR_DEVICE_ORD_LENGTH = 256 + 55,
+
+        MCIERR_NO_INTEGER = 256 + 56,
+
+        MCIERR_WAVE_OUTPUTSINUSE = 256 + 64,
+
+        MCIERR_WAVE_SETOUTPUTINUSE = 256 + 65,
+
+        MCIERR_WAVE_INPUTSINUSE = 256 + 66,
+
+        MCIERR_WAVE_SETINPUTINUSE = 256 + 67,
+
+        MCIERR_WAVE_OUTPUTUNSPECIFIED = 256 + 68,
+
+        MCIERR_WAVE_INPUTUNSPECIFIED = 256 + 69,
+
+        MCIERR_WAVE_OUTPUTSUNSUITABLE = 256 + 70,
+
+        MCIERR_WAVE_SETOUTPUTUNSUITABLE = 256 + 71,
+
+        MCIERR_WAVE_INPUTSUNSUITABLE = 256 + 72,
+
+        MCIERR_WAVE_SETINPUTUNSUITABLE = 256 + 73,
+
+        MCIERR_SEQ_DIV_INCOMPATIBLE = 256 + 80,
+
+        MCIERR_SEQ_PORT_INUSE = 256 + 81,
+
+        MCIERR_SEQ_PORT_NONEXISTENT = 256 + 82,
+
+        MCIERR_SEQ_PORT_MAPNODEVICE = 256 + 83,
+
+        MCIERR_SEQ_PORT_MISCERROR = 256 + 84,
+
+        MCIERR_SEQ_TIMER = 256 + 85,
+
+        MCIERR_SEQ_PORTUNSPECIFIED = 256 + 86,
+
+        MCIERR_SEQ_NOMIDIPRESENT = 256 + 87,
+
+        MCIERR_NO_WINDOW = 256 + 90,
+
+        MCIERR_CREATEWINDOW = 256 + 91,
+
+        MCIERR_FILE_READ = 256 + 92,
+
+        MCIERR_FILE_WRITE = 256 + 93,
+
+        MCIERR_NO_IDENTITY = 256 + 94,
+
+        MIXERR_INVALLINE = 1024 + 0,
+
+        MIXERR_INVALCONTROL = 1024 + 1,
+
+        MIXERR_INVALVALUE = 1024 + 2,
+
+        MIXERR_LASTERROR = 1024 + 2,
+    }
+
+    /// <summary>
+    /// Specifies capabilities of a waveOut device.
+    /// </summary>
+    [Flags]
+    public enum WAVECAPS
+    {
+        /// <summary>
+        /// The device can change playback pitch.
+        /// </summary>
+        WAVECAPS_PITCH = 0x01,
+
+        /// <summary>
+        /// The device can change the playback rate.
+        /// </summary>
+        WAVECAPS_PLAYBACKRATE = 0x02,
+
+        /// <summary>
+        /// The device can change the volume.
+        /// </summary>
+        WAVECAPS_VOLUME = 0x04,
+
+        /// <summary>
+        /// The device can change the stereo volume.
+        /// </summary>
+        WAVECAPS_LRVOLUME = 0x08,
+
+        /// <summary>
+        /// The device is synchronus.
+        /// </summary>
+        WAVECAPS_SYNC = 0x10,
+
+        /// <summary>
+        /// The device supports sample accurate.
+        /// </summary>
+        WAVECAPS_SAMPLEACCURATE = 0x20,
+
+        /// <summary>
+        /// The device supports direct sound writing.
+        /// </summary>
+        WAVECAPS_DIRECTSOUND = 0x40,
+    }
+
+    /// <summary>
+    /// Flags used with the PlaySound and sndPlaySound functions.
+    /// </summary>
+    [Flags]
+    public enum PLAYSOUNDFLAGS
+    {
+        /// <summary>
+        /// The sound is played synchronously and the function does not return until the sound ends. 
+        /// </summary>
+        SND_SYNC = 0x0000,
+
+        /// <summary>
+        /// The sound is played asynchronously and the function returns immediately after beginning the sound. To terminate an asynchronously played sound, call sndPlaySound with lpszSoundName set to NULL.
+        /// </summary>
+        SND_ASYNC = 0x0001,
+
+        /// <summary>
+        /// If the sound cannot be found, the function returns silently without playing the default sound.
+        /// </summary>
+        SND_NODEFAULT = 0x0002,
+
+        /// <summary>
+        /// The parameter specified by lpszSoundName points to an image of a waveform sound in memory.
+        /// </summary>
+        SND_MEMORY = 0x0004,
+
+        /// <summary>
+        /// The sound plays repeatedly until sndPlaySound is called again with the lpszSoundName parameter set to NULL. You must also specify the SND_ASYNC flag to loop sounds.
+        /// </summary>
+        SND_LOOP = 0x0008,
+
+        /// <summary>
+        /// If a sound is currently playing, the function immediately returns FALSE, without playing the requested sound.
+        /// </summary>
+        SND_NOSTOP = 0x0010,
+
+        /// <summary>
+        /// Sounds are to be stopped for the calling task. If pszSound is not NULL, all instances of the specified sound are stopped. If pszSound is NULL, all sounds that are playing on behalf of the calling task are stopped.  You must also specify the instance handle to stop SND_RESOURCE events.
+        /// </summary>
+        SND_PURGE = 0x0040,
+
+        /// <summary>
+        /// The sound is played using an application-specific association.
+        /// </summary>
+        SND_APPLICATION = 0x0080,
+
+        /// <summary>
+        /// If the driver is busy, return immediately without playing the sound.
+        /// </summary>
+        SND_NOWAIT = 0x00002000,
+
+        /// <summary>
+        /// The pszSound parameter is a system-event alias in the registry or the WIN.INI file. Do not use with either SND_FILENAME or SND_RESOURCE.
+        /// </summary>
+        SND_ALIAS = 0x00010000,
+
+        /// <summary>
+        /// The pszSound parameter is a filename.
+        /// </summary>
+        SND_FILENAME = 0x00020000,
+
+        /// <summary>
+        /// The pszSound parameter is a resource identifier; hmod must identify the instance that contains the resource.
+        /// </summary>
+        SND_RESOURCE = 0x00040004,
+
+        /// <summary>
+        /// The pszSound parameter is a predefined sound identifier.
+        /// </summary>
+        SND_ALIAS_ID = 0x00110000,
+    }
+
+    /// <summary>
     /// Provides a wrapping class for the winmm.dll 'PlaySound' functions.  This class cannot be inherited.
     /// </summary>
     public sealed class NativeMethods
@@ -42,1132 +1327,6 @@ namespace WinMM
         /// </summary>
         private NativeMethods()
         {
-        }
-
-        /// <summary>
-        /// The waveOutProc function is the callback function used with the waveform-audio output device. The waveOutProc
-        /// function is a placeholder for the application-defined function name. The address of this function can be specified
-        /// in the callback-address parameter of the waveOutOpen function.
-        /// </summary>
-        /// <param name="hwo">Handle to the waveform-audio device associated with the callback.</param>
-        /// <param name="uMsg">
-        /// Waveform-audio output message. It can be one of the following values.
-        /// <list type="Messages">
-        /// <item>WOM_CLOSE (Sent when the device is closed using the waveOutClose function.)</item>
-        /// <item>WOM_DONE (Sent when the device driver is finished with a data block sent using the waveOutWrite function.)</item>
-        /// <item>WOM_OPEN (Sent when the device is opened using the waveOutOpen function.)</item>
-        /// </list>
-        /// </param>
-        /// <param name="dwInstance">User-instance data specified with waveOutOpen.</param>
-        /// <param name="dwParam1">Message parameter one.</param>
-        /// <param name="dwParam2">Message parameter two.</param>
-        /// <remarks>
-        /// Applications should not call any system-defined functions from inside a callback function, except for
-        /// <list type="Acceptable Calls">
-        /// <item>EnterCriticalSection</item>
-        /// <item>LeaveCriticalSection</item>
-        /// <item>midiOutLongMsg</item>
-        /// <item>midiOutShortMsg</item>
-        /// <item>OutputDebugString</item>
-        /// <item>PostMessage</item>
-        /// <item>PostThreadMessage</item>
-        /// <item>SetEvent</item>
-        /// <item>timeGetSystemTime</item>
-        /// <item>timeGetTime</item>
-        /// <item>timeKillEvent</item>
-        /// <item>timeSetEvent</item>
-        /// </list>
-        /// Calling other wave functions will cause deadlock.
-        /// </remarks>
-        public delegate void waveOutProc(IntPtr hwo, WAVEOUTMESSAGE uMsg, IntPtr dwInstance, IntPtr dwParam1, IntPtr dwParam2);
-
-        /// <summary>
-        /// The waveInProc function is the callback function used with the waveform-audio input device. This function is a placeholder for the application-defined function name. The address of this function can be specified in the callback-address parameter of the waveInOpen function.
-        /// </summary>
-        /// <param name="hwi">Handle to the waveform-audio device associated with the callback function.</param>
-        /// <param name="uMsg">Waveform-audio input message.</param>
-        /// <param name="dwInstance">User instance data specified with waveInOpen.</param>
-        /// <param name="dwParam1">Message parameter one.</param>
-        /// <param name="dwParam2">Message parameter two.</param>
-        public delegate void waveInProc(IntPtr hwi, WAVEINMESSAGE uMsg, IntPtr dwInstance, IntPtr dwParam1, IntPtr dwParam2);
-
-        /// <summary>
-        /// Current state of joystick buttons.
-        /// </summary>
-        public enum JOYBUTTONS
-        {
-            /// <summary>
-            /// Joystick Button 1
-            /// </summary>
-            JOY_BUTTON1 = 0x00000001,
-
-            /// <summary>
-            /// Joystick Button 2
-            /// </summary>
-            JOY_BUTTON2 = 0x00000002,
-
-            /// <summary>
-            /// Joystick Button 3
-            /// </summary>
-            JOY_BUTTON3 = 0x00000004,
-
-            /// <summary>
-            /// Joystick Button 4
-            /// </summary>
-            JOY_BUTTON4 = 0x00000008,
-
-            /// <summary>
-            /// Joystick Button 5
-            /// </summary>
-            JOY_BUTTON5 = 0x00000010,
-
-            /// <summary>
-            /// Joystick Button 6
-            /// </summary>
-            JOY_BUTTON6 = 0x00000020,
-
-            /// <summary>
-            /// Joystick Button 7
-            /// </summary>
-            JOY_BUTTON7 = 0x00000040,
-
-            /// <summary>
-            /// Joystick Button 8
-            /// </summary>
-            JOY_BUTTON8 = 0x00000080,
-
-            /// <summary>
-            /// Joystick Button 9
-            /// </summary>
-            JOY_BUTTON9 = 0x00000100,
-
-            /// <summary>
-            /// Joystick Button 10
-            /// </summary>
-            JOY_BUTTON10 = 0x00000200,
-
-            /// <summary>
-            /// Joystick Button 11
-            /// </summary>
-            JOY_BUTTON11 = 0x00000400,
-
-            /// <summary>
-            /// Joystick Button 12
-            /// </summary>
-            JOY_BUTTON12 = 0x00000800,
-
-            /// <summary>
-            /// Joystick Button 13
-            /// </summary>
-            JOY_BUTTON13 = 0x00001000,
-
-            /// <summary>
-            /// Joystick Button 14
-            /// </summary>
-            JOY_BUTTON14 = 0x00002000,
-
-            /// <summary>
-            /// Joystick Button 15
-            /// </summary>
-            JOY_BUTTON15 = 0x00004000,
-
-            /// <summary>
-            /// Joystick Button 16
-            /// </summary>
-            JOY_BUTTON16 = 0x00008000,
-
-            /// <summary>
-            /// Joystick Button 17
-            /// </summary>
-            JOY_BUTTON17 = 0x00010000,
-
-            /// <summary>
-            /// Joystick Button 18
-            /// </summary>
-            JOY_BUTTON18 = 0x00020000,
-
-            /// <summary>
-            /// Joystick Button 19
-            /// </summary>
-            JOY_BUTTON19 = 0x00040000,
-
-            /// <summary>
-            /// Joystick Button 20
-            /// </summary>
-            JOY_BUTTON20 = 0x00080000,
-
-            /// <summary>
-            /// Joystick Button 21
-            /// </summary>
-            JOY_BUTTON21 = 0x00100000,
-
-            /// <summary>
-            /// Joystick Button 22
-            /// </summary>
-            JOY_BUTTON22 = 0x00200000,
-
-            /// <summary>
-            /// Joystick Button 23
-            /// </summary>
-            JOY_BUTTON23 = 0x00400000,
-
-            /// <summary>
-            /// Joystick Button 24
-            /// </summary>
-            JOY_BUTTON24 = 0x00800000,
-
-            /// <summary>
-            /// Joystick Button 25
-            /// </summary>
-            JOY_BUTTON25 = 0x01000000,
-
-            /// <summary>
-            /// Joystick Button 26
-            /// </summary>
-            JOY_BUTTON26 = 0x02000000,
-
-            /// <summary>
-            /// Joystick Button 27
-            /// </summary>
-            JOY_BUTTON27 = 0x04000000,
-
-            /// <summary>
-            /// Joystick Button 28
-            /// </summary>
-            JOY_BUTTON28 = 0x08000000,
-
-            /// <summary>
-            /// Joystick Button 29
-            /// </summary>
-            JOY_BUTTON29 = 0x10000000,
-
-            /// <summary>
-            /// Joystick Button 30
-            /// </summary>
-            JOY_BUTTON30 = 0x20000000,
-
-            /// <summary>
-            /// Joystick Button 31
-            /// </summary>
-            JOY_BUTTON31 = 0x40000000,
-
-            /// <summary>
-            /// Joystick Button 32
-            /// </summary>
-            JOY_BUTTON32 = unchecked((int)0x80000000),
-        }
-
-        /// <summary>
-        /// Flags indicating the valid information returned in the JOYINFOEX structure.
-        /// </summary>
-        public enum JOYINFOFLAGS
-        {
-            /// <summary>
-            /// The dwXpos member contains valid data for the x-coordinate of the joystick.
-            /// </summary>
-            JOY_RETURNX        = 0x00000001,
-
-            /// <summary>
-            /// The dwYpos member contains valid data for the y-coordinate of the joystick.
-            /// </summary>
-            JOY_RETURNY        = 0x00000002,
-
-            /// <summary>
-            /// The dwZpos member contains valid data for the z-coordinate of the joystick.
-            /// </summary>
-            JOY_RETURNZ        = 0x00000004,
-
-            /// <summary>
-            /// The dwRpos member contains valid rudder pedal data. This information represents another (fourth) axis.
-            /// </summary>
-            JOY_RETURNR        = 0x00000008,
-
-            /// <summary>
-            /// The dwUpos member contains valid data for a fifth axis of the joystick, if such an axis is available, or returns zero otherwise.
-            /// </summary>
-            JOY_RETURNU        = 0x00000010,
-
-            /// <summary>
-            /// The dwVpos member contains valid data for a sixth axis of the joystick, if such an axis is available, or returns zero otherwise.
-            /// </summary>
-            JOY_RETURNV        = 0x00000020,
-
-            /// <summary>
-            /// The dwPOV member contains valid information about the point-of-view control, expressed in discrete units.
-            /// </summary>
-            JOY_RETURNPOV      = 0x00000040,
-
-            /// <summary>
-            /// The dwButtons member contains valid information about the state of each joystick button.
-            /// </summary>
-            JOY_RETURNBUTTONS  = 0x00000080,
-            
-            /// <summary>
-            /// Data stored in this structure is uncalibrated joystick readings.
-            /// </summary>
-            JOY_RETURNRAWDATA  = 0x00000100,
-
-            /// <summary>
-            /// The dwPOV member contains valid information about the point-of-view control expressed in continuous, one-hundredth degree units.
-            /// </summary>
-            JOY_RETURNPOVCTS   = 0x00000200,
-            
-            /// <summary>
-            /// Centers the joystick neutral position to the middle value of each axis of movement.
-            /// </summary>
-            JOY_RETURNCENTERED = 0x00000400,
-
-            /// <summary>
-            /// Expands the range for the neutral position of the joystick and calls this range the dead zone. The joystick driver returns a constant value for all positions in the dead zone.
-            /// </summary>
-            JOY_USEDEADZONE    = 0x00000800,
-
-            /// <summary>
-            /// Equivalent to setting all of the JOY_RETURN bits except JOY_RETURNRAWDATA.
-            /// </summary>
-            JOY_RETURNALL      = JOY_RETURNX | JOY_RETURNY | JOY_RETURNZ | JOY_RETURNR | JOY_RETURNU | JOY_RETURNV | JOY_RETURNPOV | JOY_RETURNBUTTONS,
-
-            /// <summary>
-            /// Read the joystick port even if the driver does not detect a device.
-            /// </summary>
-            JOY_CAL_READALWAYS = 0x00010000,
-
-            /// <summary>
-            /// Reads the x- and y-coordinates and place the raw values in dwXpos and dwYpos.
-            /// </summary>
-            JOY_CAL_READXYONLY = 0x00020000,
-
-            /// <summary>
-            /// Read the x-, y-, and z-coordinates and store the raw values in dwXpos, dwYpos, and dwZpos.
-            /// </summary>
-            JOY_CAL_READ3      = 0x00040000,
-
-            /// <summary>
-            /// Read the rudder information and the x-, y-, and z-coordinates and store the raw values in dwXpos, dwYpos, dwZpos, and dwRpos.
-            /// </summary>
-            JOY_CAL_READ4      = 0x00080000,
-
-            /// <summary>
-            /// Read the x-coordinate and store the raw (uncalibrated) value in dwXpos.
-            /// </summary>
-            JOY_CAL_READXONLY  = 0x00100000,
-
-            /// <summary>
-            /// Reads the y-coordinate and store the raw value in dwYpos.
-            /// </summary>
-            JOY_CAL_READYONLY  = 0x00200000,
-
-            /// <summary>
-            /// Read the rudder information and the x-, y-, z-, and u-coordinates and store the raw values in dwXpos, dwYpos, dwZpos, dwRpos, and dwUpos.
-            /// </summary>
-            JOY_CAL_READ5      = 0x00400000,
-            
-            /// <summary>
-            /// Read the raw v-axis data if a joystick mini driver is present that will provide the data. Returns zero otherwise.
-            /// </summary>
-            JOY_CAL_READ6      = 0x00800000,
-
-            /// <summary>
-            /// Read the z-coordinate and store the raw value in dwZpos.
-            /// </summary>
-            JOY_CAL_READZONLY  = 0x01000000,
-
-            /// <summary>
-            /// Read the rudder information if a joystick mini-driver is present that will provide the data and store the raw value in dwRpos. Return zero otherwise.
-            /// </summary>
-            JOY_CAL_READRONLY  = 0x02000000,
-
-            /// <summary>
-            /// Read the u-coordinate if a joystick mini-driver is present that will provide the data and store the raw value in dwUpos. Return zero otherwise.
-            /// </summary>
-            JOY_CAL_READUONLY  = 0x04000000,
-
-            /// <summary>
-            /// Read the v-coordinate if a joystick mini-driver is present that will provide the data and store the raw value in dwVpos. Return zero otherwise.
-            /// </summary>
-            JOY_CAL_READVONLY  = 0x08000000
-        }
-
-        /// <summary>
-        /// Joystick capabilities.
-        /// </summary>
-        public enum JOYCAPABILITIES
-        {
-            /// <summary>
-            /// Joystick has z-coordinate information.
-            /// </summary>
-            JOYCAPS_HASZ = 1,
-
-            /// <summary>
-            /// Joystick has rudder (fourth axis) information.
-            /// </summary>
-            JOYCAPS_HASR = 2,
-
-            /// <summary>
-            /// Joystick has u-coordinate (fifth axis) information.
-            /// </summary>
-            JOYCAPS_HASU = 4,
-
-            /// <summary>
-            /// Joystick has v-coordinate (sixth axis) information.
-            /// </summary>
-            JOYCAPS_HASV = 8,
-
-            /// <summary>
-            /// Joystick has point-of-view information.
-            /// </summary>
-            JOYCAPS_HASPOV = 16,
-
-            /// <summary>
-            /// Joystick point-of-view supports discrete values (centered, forward, backward, left, and right).
-            /// </summary>
-            JOYCAPS_POV4DIR = 32,
-
-            /// <summary>
-            /// Joystick point-of-view supports continuous degree bearings.
-            /// </summary>
-            JOYCAPS_POVCTS = 64
-        }
-        
-        /// <summary>
-        /// Used with the <see cref="NativeMethods.waveOutOpen"/> command.
-        /// </summary>
-        [Flags]
-        public enum WAVEOPENFLAGS
-        {
-            /// <summary>
-            /// No callback mechanism. This is the default setting.
-            /// </summary>
-            CALLBACK_NULL = 0x00000,
-
-            /// <summary>
-            /// Indicates the dwCallback parameter is a window handle.
-            /// </summary>
-            CALLBACK_WINDOW = 0x10000,
-
-            /// <summary>
-            /// The dwCallback parameter is a thread identifier.
-            /// </summary>
-            CALLBACK_THREAD = 0x20000,
-
-            /// <summary>
-            /// The dwCallback parameter is a thread identifier.
-            /// </summary>
-            [Obsolete]
-            CALLBACK_TASK = 0x20000,
-
-            /// <summary>
-            /// The dwCallback parameter is a callback procedure address.
-            /// </summary>
-            CALLBACK_FUNCTION = 0x30000,
-
-            /// <summary>
-            /// If this flag is specified, <see cref="NativeMethods.waveOutOpen"/> queries the device to determine if it supports the given format, but the device is not actually opened.
-            /// </summary>
-            WAVE_FORMAT_QUERY = 0x00001,
-
-            /// <summary>
-            /// If this flag is specified, a synchronous waveform-audio device can be opened. If this flag is not specified while opening a synchronous driver, the device will fail to open.
-            /// </summary>
-            WAVE_ALLOWSYNC = 0x00002,
-
-            /// <summary>
-            /// If this flag is specified, the uDeviceID parameter specifies a waveform-audio device to be mapped to by the wave mapper.
-            /// </summary>
-            WAVE_MAPPED = 0x00004,
-
-            /// <summary>
-            /// If this flag is specified, the ACM driver does not perform conversions on the audio data.
-            /// </summary>
-            WAVE_FORMAT_DIRECT = 0x00008
-        }
-
-        /// <summary>
-        /// Flags supplying information about the buffer. The following values are defined:
-        /// </summary>
-        [Flags]
-        public enum WAVEHDRFLAGS
-        {
-            /// <summary>
-            /// This buffer is the first buffer in a loop.  This flag is used only with output buffers.
-            /// </summary>
-            WHDR_BEGINLOOP = 0x00000004,
-
-            /// <summary>
-            /// Set by the device driver to indicate that it is finished with the buffer and is returning it to the application.
-            /// </summary>
-            WHDR_DONE = 0x00000001,
-
-            /// <summary>
-            /// This buffer is the last buffer in a loop.  This flag is used only with output buffers.
-            /// </summary>
-            WHDR_ENDLOOP = 0x00000008,
-
-            /// <summary>
-            /// Set by Windows to indicate that the buffer is queued for playback.
-            /// </summary>
-            WHDR_INQUEUE = 0x00000010,
-
-            /// <summary>
-            /// Set by Windows to indicate that the buffer has been prepared with the waveInPrepareHeader or waveOutPrepareHeader function.
-            /// </summary>
-            WHDR_PREPARED = 0x00000002
-        }
-
-        /// <summary>
-        /// Used with the <see cref="NativeMethods.waveOutProc"/>
-        /// </summary>
-        public enum WAVEOUTMESSAGE
-        {
-            /// <summary>
-            /// Indicates that the device has been opened.
-            /// </summary>
-            WOM_OPEN = 0x3BB,
-
-            /// <summary>
-            /// Indicates that the device has been closed.
-            /// </summary>
-            WOM_CLOSE = 0x3BC,
-
-            /// <summary>
-            /// Indicates that the device has finished playing a block.
-            /// </summary>
-            WOM_DONE = 0x3BD
-        }
-
-        /// <summary>
-        /// Used with the <see cref="NativeMethods.waveInProc"/>
-        /// </summary>
-        public enum WAVEINMESSAGE
-        {
-            /// <summary>
-            /// Sent when the device is opened using the <see cref="waveInOpen"/> function.
-            /// </summary>
-            MM_WIM_OPEN = 0x3BE,
-
-            /// <summary>
-            /// Sent when the device is closed using the <see cref="waveInClose"/> function.
-            /// </summary>
-            MM_WIM_CLOSE = 0x3BF,
-
-            /// <summary>
-            /// Sent when the device driver is finished with a data block sent using the <see cref="waveInAddBuffer"/> function.
-            /// </summary>
-            MM_WIM_DATA = 0x3C0
-        }
-
-        /// <summary>
-        /// Used as a return result from many of the WinMM calls.
-        /// </summary>
-        public enum MMSYSERROR
-        {
-            /// <summary>
-            /// No Error. (Success)
-            /// </summary>
-            MMSYSERR_NOERROR = 0,
-
-            /// <summary>
-            /// Unspecified Error.
-            /// </summary>
-            MMSYSERR_ERROR = 1,
-
-            /// <summary>
-            /// Device ID out of range.
-            /// </summary>
-            MMSYSERR_BADDEVICEID = 2,
-
-            /// <summary>
-            /// Driver failed enable.
-            /// </summary>
-            MMSYSERR_NOTENABLED = 3,
-
-            /// <summary>
-            /// Device is already allocated.
-            /// </summary>
-            MMSYSERR_ALLOCATED = 4,
-
-            /// <summary>
-            /// Device handle is invalid.
-            /// </summary>
-            MMSYSERR_INVALHANDLE = 5,
-
-            /// <summary>
-            /// No device driver is present.
-            /// </summary>
-            MMSYSERR_NODRIVER = 6,
-
-            /// <summary>
-            /// In sufficient memory, or memory allocation error.
-            /// </summary>
-            MMSYSERR_NOMEM = 7,
-
-            /// <summary>
-            /// Unsupported function.
-            /// </summary>
-            MMSYSERR_NOTSUPPORTED = 8,
-
-            /// <summary>
-            /// Error value out of range.
-            /// </summary>
-            MMSYSERR_BADERRNUM = 9,
-
-            /// <summary>
-            /// Invalid flag passed.
-            /// </summary>
-            MMSYSERR_INVALFLAG = 10,
-
-            /// <summary>
-            /// Invalid parameter passed.
-            /// </summary>
-            MMSYSERR_INVALPARAM = 11,
-
-            /// <summary>
-            /// Handle being used simultaneously on another thread.
-            /// </summary>
-            MMSYSERR_HANDLEBUSY = 12,
-
-            /// <summary>
-            /// Specified alias not found.
-            /// </summary>
-            MMSYSERR_INVALIDALIAS = 13,
-
-            /// <summary>
-            /// Bad registry database.
-            /// </summary>
-            MMSYSERR_BADDB = 14,
-
-            /// <summary>
-            /// Registry key not found.
-            /// </summary>
-            MMSYSERR_KEYNOTFOUND = 15,
-
-            /// <summary>
-            /// Registry read error.
-            /// </summary>
-            MMSYSERR_READERROR = 16,
-
-            /// <summary>
-            /// Registry write error.
-            /// </summary>
-            MMSYSERR_WRITEERROR = 17,
-
-            /// <summary>
-            /// Registry delete error.
-            /// </summary>
-            MMSYSERR_DELETEERROR = 18,
-
-            /// <summary>
-            /// Registry value not found.
-            /// </summary>
-            MMSYSERR_VALNOTFOUND = 19,
-
-            /// <summary>
-            /// Driver does not call DriverCallback.
-            /// </summary>
-            MMSYSERR_NODRIVERCB = 20,
-
-            /// <summary>
-            /// More data to be returned.
-            /// </summary>
-            MMSYSERR_MOREDATA = 21,
-
-            /// <summary>
-            /// Unsupported wave format.
-            /// </summary>
-            WAVERR_BADFORMAT = 32,
-
-            /// <summary>
-            /// Still something playing.
-            /// </summary>
-            WAVERR_STILLPLAYING = 33,
-
-            /// <summary>
-            /// Header not prepared.
-            /// </summary>
-            WAVERR_UNPREPARED = 34,
-
-            /// <summary>
-            /// Device is syncronus.
-            /// </summary>
-            WAVERR_SYNC = 35,
-
-            /// <summary>
-            /// Header not prepared.
-            /// </summary>
-            MIDIERR_UNPREPARED = 64,
-
-            /// <summary>
-            /// Still something playing.
-            /// </summary>
-            MIDIERR_STILLPLAYING = 65,
-
-            /// <summary>
-            /// No configured instruments.
-            /// </summary>
-            MIDIERR_NOMAP = 66,
-
-            /// <summary>
-            /// Hardware is still busy.
-            /// </summary>
-            MIDIERR_NOTREADY = 67,
-
-            /// <summary>
-            /// Port no longer connected
-            /// </summary>
-            MIDIERR_NODEVICE = 68,
-
-            /// <summary>
-            /// Invalid MIF
-            /// </summary>
-            MIDIERR_INVALIDSETUP = 69,
-
-            /// <summary>
-            /// Operation unsupported with open mode.
-            /// </summary>
-            MIDIERR_BADOPENMODE = 70,
-
-            /// <summary>
-            /// Thru device 'eating' a message
-            /// </summary>
-            MIDIERR_DONT_CONTINUE = 71,
-
-            /// <summary>
-            /// The resolution specified in uPeriod is out of range.
-            /// </summary>
-            TIMERR_NOCANDO = 96 + 1,
-
-            /// <summary>
-            /// Time struct size
-            /// </summary>
-            TIMERR_STRUCT = 96 + 33,
-
-            /// <summary>
-            /// Bad parameters
-            /// </summary>
-            JOYERR_PARMS = 160 + 5,
-            
-            /// <summary>
-            /// Request not completed
-            /// </summary>
-            JOYERR_NOCANDO = 160 + 6,
-
-            /// <summary>
-            /// Joystick is unplugged
-            /// </summary>
-            JOYERR_UNPLUGGED = 160 + 7,
-
-            /// <summary>
-            /// Invalid device ID
-            /// </summary>
-            MCIERR_INVALID_DEVICE_ID = 256 + 1,
-
-            /// <summary>
-            /// Unrecognized keyword.
-            /// </summary>
-            MCIERR_UNRECOGNIZED_KEYWORD = 256 + 3,
-
-            /// <summary>
-            /// Unrecognized command
-            /// </summary>
-            MCIERR_UNRECOGNIZED_COMMAND = 256 + 5,
-
-            /// <summary>
-            /// Hardware error
-            /// </summary>
-            MCIERR_HARDWARE = 256 + 6,
-
-            /// <summary>
-            /// Invalid device name
-            /// </summary>
-            MCIERR_INVALID_DEVICE_NAME = 256 + 7,
-
-            /// <summary>
-            /// Out of memory
-            /// </summary>
-            MCIERR_OUT_OF_MEMORY = 256 + 8,
-
-            MCIERR_DEVICE_OPEN = 256 + 9,
-
-            MCIERR_CANNOT_LOAD_DRIVER = 256 + 10,
-
-            MCIERR_MISSING_COMMAND_STRING = 256 + 11,
-
-            MCIERR_PARAM_OVERFLOW = 256 + 12,
-            
-            MCIERR_MISSING_STRING_ARGUMENT = 256 + 13,
-            
-            MCIERR_BAD_INTEGER = 256 + 14,
-            
-            MCIERR_PARSER_INTERNAL = 256 + 15,
-            
-            MCIERR_DRIVER_INTERNAL = 256 + 16,
-            
-            MCIERR_MISSING_PARAMETER = 256 + 17,
-            
-            MCIERR_UNSUPPORTED_FUNCTION = 256 + 18,
-            
-            MCIERR_FILE_NOT_FOUND = 256 + 19,
-            
-            MCIERR_DEVICE_NOT_READY = 256 + 20,
-            
-            MCIERR_INTERNAL = 256 + 21,
-            
-            MCIERR_DRIVER = 256 + 22,
-            
-            MCIERR_CANNOT_USE_ALL = 256 + 23,
-            
-            MCIERR_MULTIPLE = 256 + 24,
-            
-            MCIERR_EXTENSION_NOT_FOUND = 256 + 25,
-            
-            MCIERR_OUTOFRANGE = 256 + 26,
-            
-            MCIERR_FLAGS_NOT_COMPATIBLE = 256 + 28,
-            
-            MCIERR_FILE_NOT_SAVED = 256 + 30,
-            
-            MCIERR_DEVICE_TYPE_REQUIRED = 256 + 31,
-            
-            MCIERR_DEVICE_LOCKED = 256 + 32,
-            
-            MCIERR_DUPLICATE_ALIAS = 256 + 33,
-            
-            MCIERR_BAD_CONSTANT = 256 + 34,
-            
-            MCIERR_MUST_USE_SHAREABLE = 256 + 35,
-            
-            MCIERR_MISSING_DEVICE_NAME = 256 + 36,
-            
-            MCIERR_BAD_TIME_FORMAT = 256 + 37,
-            
-            MCIERR_NO_CLOSING_QUOTE = 256 + 38,
-            
-            MCIERR_DUPLICATE_FLAGS = 256 + 39,
-            
-            MCIERR_INVALID_FILE = 256 + 40,
-            
-            MCIERR_NULL_PARAMETER_BLOCK = 256 + 41,
-            
-            MCIERR_UNNAMED_RESOURCE = 256 + 42,
-            
-            MCIERR_NEW_REQUIRES_ALIAS = 256 + 43,
-            
-            MCIERR_NOTIFY_ON_AUTO_OPEN = 256 + 44,
-            
-            MCIERR_NO_ELEMENT_ALLOWED = 256 + 45,
-            
-            MCIERR_NONAPPLICABLE_FUNCTION = 256 + 46,
-            
-            MCIERR_ILLEGAL_FOR_AUTO_OPEN = 256 + 47,
-            
-            MCIERR_FILENAME_REQUIRED = 256 + 48,
-            
-            MCIERR_EXTRA_CHARACTERS = 256 + 49,
-            
-            MCIERR_DEVICE_NOT_INSTALLED = 256 + 50,
-            
-            MCIERR_GET_CD = 256 + 51,
-            
-            MCIERR_SET_CD = 256 + 52,
-            
-            MCIERR_SET_DRIVE = 256 + 53,
-            
-            MCIERR_DEVICE_LENGTH = 256 + 54,
-            
-            MCIERR_DEVICE_ORD_LENGTH = 256 + 55,
-
-            MCIERR_NO_INTEGER = 256 + 56,
-
-            MCIERR_WAVE_OUTPUTSINUSE = 256 + 64,
-
-            MCIERR_WAVE_SETOUTPUTINUSE = 256 + 65,
-
-            MCIERR_WAVE_INPUTSINUSE = 256 + 66,
-
-            MCIERR_WAVE_SETINPUTINUSE = 256 + 67,
-
-            MCIERR_WAVE_OUTPUTUNSPECIFIED = 256 + 68,
-
-            MCIERR_WAVE_INPUTUNSPECIFIED = 256 + 69,
-
-            MCIERR_WAVE_OUTPUTSUNSUITABLE = 256 + 70,
-
-            MCIERR_WAVE_SETOUTPUTUNSUITABLE = 256 + 71,
-
-            MCIERR_WAVE_INPUTSUNSUITABLE = 256 + 72,
-
-            MCIERR_WAVE_SETINPUTUNSUITABLE = 256 + 73,
-
-            MCIERR_SEQ_DIV_INCOMPATIBLE = 256 + 80,
-
-            MCIERR_SEQ_PORT_INUSE = 256 + 81,
-
-            MCIERR_SEQ_PORT_NONEXISTENT = 256 + 82,
-
-            MCIERR_SEQ_PORT_MAPNODEVICE = 256 + 83,
-
-            MCIERR_SEQ_PORT_MISCERROR = 256 + 84,
-
-            MCIERR_SEQ_TIMER = 256 + 85,
-
-            MCIERR_SEQ_PORTUNSPECIFIED = 256 + 86,
-
-            MCIERR_SEQ_NOMIDIPRESENT = 256 + 87,
-
-            MCIERR_NO_WINDOW = 256 + 90,
-
-            MCIERR_CREATEWINDOW = 256 + 91,
-
-            MCIERR_FILE_READ = 256 + 92,
-
-            MCIERR_FILE_WRITE = 256 + 93,
-
-            MCIERR_NO_IDENTITY = 256 + 94,
-
-            MIXERR_INVALLINE = 1024 + 0,
-
-            MIXERR_INVALCONTROL = 1024 + 1,
-
-            MIXERR_INVALVALUE = 1024 + 2,
-
-            MIXERR_LASTERROR = 1024 + 2,
-        }
-
-        /// <summary>
-        /// Specifies capabilities of a waveOut device.
-        /// </summary>
-        [Flags]
-        public enum WAVECAPS
-        {
-            /// <summary>
-            /// The device can change playback pitch.
-            /// </summary>
-            WAVECAPS_PITCH = 0x01,
-
-            /// <summary>
-            /// The device can change the playback rate.
-            /// </summary>
-            WAVECAPS_PLAYBACKRATE = 0x02,
-
-            /// <summary>
-            /// The device can change the volume.
-            /// </summary>
-            WAVECAPS_VOLUME = 0x04,
-
-            /// <summary>
-            /// The device can change the stereo volume.
-            /// </summary>
-            WAVECAPS_LRVOLUME = 0x08,
-
-            /// <summary>
-            /// The device is synchronus.
-            /// </summary>
-            WAVECAPS_SYNC = 0x10,
-
-            /// <summary>
-            /// The device supports sample accurate.
-            /// </summary>
-            WAVECAPS_SAMPLEACCURATE = 0x20,
-
-            /// <summary>
-            /// The device supports direct sound writing.
-            /// </summary>
-            WAVECAPS_DIRECTSOUND = 0x40,
-        }
-
-        /// <summary>
-        /// Specifies the frequency, bitdepth, and channel count of the formats a device can support.
-        /// </summary>
-        [Flags]
-        public enum WAVEFORMATS
-        {
-            /// <summary>
-            /// 11.025 kHz, Mono,   8-bit
-            /// </summary>
-            WAVE_FORMAT_1M08 = 0x00000001,
-
-            /// <summary>
-            /// 11.025 kHz, Stereo, 8-bit
-            /// </summary>
-            WAVE_FORMAT_1S08 = 0x00000002,
-
-            /// <summary>
-            /// 11.025 kHz, Mono,   16-bit
-            /// </summary>
-            WAVE_FORMAT_1M16 = 0x00000004,
-            
-            /// <summary>
-            /// 11.025 kHz, Stereo, 16-bit
-            /// </summary>
-            WAVE_FORMAT_1S16 = 0x00000008,
-
-            /// <summary>
-            /// 22.05  kHz, Mono,   8-bit
-            /// </summary>
-            WAVE_FORMAT_2M08 = 0x00000010,
-
-            /// <summary>
-            /// 22.05  kHz, Stereo, 8-bit
-            /// </summary>
-            WAVE_FORMAT_2S08 = 0x00000020,
-
-            /// <summary>
-            /// 22.05  kHz, Mono,   16-bit
-            /// </summary>
-            WAVE_FORMAT_2M16 = 0x00000040,
-
-            /// <summary>
-            /// 22.05  kHz, Stereo, 16-bit
-            /// </summary>
-            WAVE_FORMAT_2S16 = 0x00000080,
-
-            /// <summary>
-            /// 44.1   kHz, Mono,   8-bit
-            /// </summary>
-            WAVE_FORMAT_4M08 = 0x00000100,
-
-            /// <summary>
-            /// 44.1   kHz, Stereo, 8-bit
-            /// </summary>
-            WAVE_FORMAT_4S08 = 0x00000200,
-
-            /// <summary>
-            /// 44.1   kHz, Mono,   16-bit
-            /// </summary>
-            WAVE_FORMAT_4M16 = 0x00000400,
-
-            /// <summary>
-            /// 44.1   kHz, Stereo, 16-bit
-            /// </summary>
-            WAVE_FORMAT_4S16 = 0x00000800,
-
-            /// <summary>
-            /// 48     kHz, Mono,   8-bit
-            /// </summary>
-            WAVE_FORMAT_48M08 = 0x00001000,
-
-            /// <summary>
-            /// 48     kHz, Stereo, 8-bit
-            /// </summary>
-            WAVE_FORMAT_48S08 = 0x00002000,
-
-            /// <summary>
-            /// 48     kHz, Mono,   16-bit
-            /// </summary>
-            WAVE_FORMAT_48M16 = 0x00004000,
-
-            /// <summary>
-            /// 48     kHz, Stereo, 16-bit
-            /// </summary>
-            WAVE_FORMAT_48S16 = 0x00008000,
-
-            /// <summary>
-            /// 96     kHz, Mono,   8-bit
-            /// </summary>
-            WAVE_FORMAT_96M08 = 0x00010000,
-
-            /// <summary>
-            /// 96     kHz, Stereo, 8-bit
-            /// </summary>
-            WAVE_FORMAT_96S08 = 0x00020000,
-
-            /// <summary>
-            /// 96     kHz, Mono,   16-bit
-            /// </summary>
-            WAVE_FORMAT_96M16 = 0x00040000,
-
-            /// <summary>
-            /// 96     kHz, Stereo, 16-bit
-            /// </summary>
-            WAVE_FORMAT_96S16 = 0x00080000,
-        }
-
-        /// <summary>
-        /// Describes a wave format scheme.
-        /// </summary>
-        public enum WAVEFORMATTAG
-        {
-            /// <summary>
-            /// Pulse Code Modulation
-            /// </summary>
-            WAVE_FORMAT_PCM = 0x01,
-
-            /// <summary>
-            /// Adaptive Differential Pulse Code Modulation
-            /// </summary>
-            WAVE_FORMAT_ADPCM = 0x02
-        }
-
-        /// <summary>
-        /// Flags used with the PlaySound and sndPlaySound functions.
-        /// </summary>
-        [Flags]
-        public enum PLAYSOUNDFLAGS
-        {
-            /// <summary>
-            /// The sound is played synchronously and the function does not return until the sound ends. 
-            /// </summary>
-            SND_SYNC = 0x0000,
-
-            /// <summary>
-            /// The sound is played asynchronously and the function returns immediately after beginning the sound. To terminate an asynchronously played sound, call sndPlaySound with lpszSoundName set to NULL.
-            /// </summary>
-            SND_ASYNC = 0x0001,
-
-            /// <summary>
-            /// If the sound cannot be found, the function returns silently without playing the default sound.
-            /// </summary>
-            SND_NODEFAULT = 0x0002,
-
-            /// <summary>
-            /// The parameter specified by lpszSoundName points to an image of a waveform sound in memory.
-            /// </summary>
-            SND_MEMORY = 0x0004,
-
-            /// <summary>
-            /// The sound plays repeatedly until sndPlaySound is called again with the lpszSoundName parameter set to NULL. You must also specify the SND_ASYNC flag to loop sounds.
-            /// </summary>
-            SND_LOOP = 0x0008,
-
-            /// <summary>
-            /// If a sound is currently playing, the function immediately returns FALSE, without playing the requested sound.
-            /// </summary>
-            SND_NOSTOP = 0x0010,
-
-            /// <summary>
-            /// Sounds are to be stopped for the calling task. If pszSound is not NULL, all instances of the specified sound are stopped. If pszSound is NULL, all sounds that are playing on behalf of the calling task are stopped.  You must also specify the instance handle to stop SND_RESOURCE events.
-            /// </summary>
-            SND_PURGE = 0x0040,
-
-            /// <summary>
-            /// The sound is played using an application-specific association.
-            /// </summary>
-            SND_APPLICATION = 0x0080,
-
-            /// <summary>
-            /// If the driver is busy, return immediately without playing the sound.
-            /// </summary>
-            SND_NOWAIT = 0x00002000,
-
-            /// <summary>
-            /// The pszSound parameter is a system-event alias in the registry or the WIN.INI file. Do not use with either SND_FILENAME or SND_RESOURCE.
-            /// </summary>
-            SND_ALIAS = 0x00010000,
-
-            /// <summary>
-            /// The pszSound parameter is a filename.
-            /// </summary>
-            SND_FILENAME = 0x00020000,
-
-            /// <summary>
-            /// The pszSound parameter is a resource identifier; hmod must identify the instance that contains the resource.
-            /// </summary>
-            SND_RESOURCE = 0x00040004,
-
-            /// <summary>
-            /// The pszSound parameter is a predefined sound identifier.
-            /// </summary>
-            SND_ALIAS_ID = 0x00110000,
         }
 
         /// <summary>
@@ -1183,7 +1342,7 @@ namespace WinMM
             /// <summary>
             /// Indicated that the error comes from WaveOut.
             /// </summary>
-            WaveOut
+            WaveOut,
         }
 
         /// <summary>
@@ -1484,7 +1643,7 @@ namespace WinMM
         /// <param name="fdwOpen">Flags for opening the device.</param>
         /// <returns>Returns MMSYSERR_NOERROR if successful or an error otherwise.</returns>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveInOpen(ref IntPtr phwi, int uDeviceID, ref WAVEFORMATEX pwfx, waveInProc dwCallback, IntPtr dwCallbackInstance, WAVEOPENFLAGS fdwOpen);
+        public static extern MMSYSERROR waveInOpen(ref IntPtr phwi, int uDeviceID, ref WAVEFORMATEX pwfx, WaveInProc dwCallback, IntPtr dwCallbackInstance, WaveOpenFlags fdwOpen);
 
         /// <summary>
         /// The waveInPrepareHeader function prepares a buffer for waveform-audio input.
@@ -1830,7 +1989,7 @@ namespace WinMM
         /// If you choose to have a function receive callback information, the following messages are sent to the function to indicate the progress of waveform-audio output: WOM_OPEN, WOM_CLOSE, and WOM_DONE. 
         /// </remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR waveOutOpen(ref IntPtr phwo, int uDeviceID, ref WAVEFORMATEX pwfx, waveOutProc dwCallback, IntPtr dwCallbackInstance, WAVEOPENFLAGS dwFlags);
+        public static extern MMSYSERROR waveOutOpen(ref IntPtr phwo, int uDeviceID, ref WAVEFORMATEX pwfx, WaveOutProc dwCallback, IntPtr dwCallbackInstance, WaveOpenFlags dwFlags);
 
         /// <summary>
         /// The waveOutPause function pauses playback on the given waveform-audio output device. The current position is saved.
@@ -2041,493 +2200,5 @@ namespace WinMM
         /// </remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
         public static extern MMSYSERROR waveOutWrite(WaveOutSafeHandle hwo, IntPtr pwh, int cbwh);
-
-        /// <summary>
-        /// The JOYCAPS structure contains information about the joystick capabilities.
-        /// </summary>
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        public struct JOYCAPS
-        { 
-            /// <summary>
-            /// Manufacturer identifier.
-            /// </summary>
-            public short wMid; 
-            
-            /// <summary>
-            /// Product identifier.
-            /// </summary>
-            public short wPid; 
-            
-            /// <summary>
-            /// Null-terminated string containing the joystick product name.
-            /// </summary>
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-            public string szPname; 
-            
-            /// <summary>
-            /// Minimum X-coordinate.
-            /// </summary>
-            public int wXmin; 
-
-            /// <summary>
-            /// Maximum X-coordinate.
-            /// </summary>
-            public int wXmax; 
-
-            /// <summary>
-            /// Minimum Y-coordinate.
-            /// </summary>
-            public int wYmin; 
-
-            /// <summary>
-            /// Maximum Y-coordinate.
-            /// </summary>
-            public int wYmax; 
-
-            /// <summary>
-            /// Minimum Z-coordinate.
-            /// </summary>
-            public int wZmin; 
-
-            /// <summary>
-            /// Maximum Z-coordinate.
-            /// </summary>
-            public int wZmax;
-
-            /// <summary>
-            /// Number of joystick buttons.
-            /// </summary>
-            public int wNumButtons;
-
-            /// <summary>
-            /// Smallest polling frequency supported when captured by the joySetCapture function.
-            /// </summary>
-            public int wPeriodMin;
-
-            /// <summary>
-            /// Largest polling frequency supported when captured by joySetCapture.
-            /// </summary>
-            public int wPeriodMax;
-
-            /// <summary>
-            /// Minimum rudder value. The rudder is a fourth axis of movement.
-            /// </summary>
-            public int wRmin;
-
-            /// <summary>
-            /// Maximum rudder value. The rudder is a fourth axis of movement.
-            /// </summary>
-            public int wRmax;
-
-            /// <summary>
-            /// Minimum u-coordinate (fifth axis) values.
-            /// </summary>
-            public int wUmin;
-            
-            /// <summary>
-            /// Maximum u-coordinate (fifth axis) values.
-            /// </summary>
-            public int wUmax;
-            
-            /// <summary>
-            /// Minimum v-coordinate (sixth axis) values.
-            /// </summary>
-            public int wVmin;
-            
-            /// <summary>
-            /// Maximum v-coordinate (sixth axis) values.
-            /// </summary>
-            public int wVmax;
-            
-            /// <summary>
-            /// Joystick capabilities.
-            /// </summary>
-            public JOYCAPABILITIES wCaps;
-            
-            /// <summary>
-            /// Maximum number of axes supported by the joystick.
-            /// </summary>
-            public int wMaxAxes;
-            
-            /// <summary>
-            /// Number of axes currently in use by the joystick.
-            /// </summary>
-            public int wNumAxes;
-            
-            /// <summary>
-            /// Maximum number of buttons supported by the joystick.
-            /// </summary>
-            public int wMaxButtons;
-            
-            /// <summary>
-            /// Null-terminated string containing the registry key for the joystick.
-            /// </summary>
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-            public string szRegKey;
-            
-            /// <summary>
-            /// Null-terminated string identifying the joystick driver OEM.
-            /// </summary>
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-            public string szOEMVxD;
-        }
-
-        /// <summary>
-        /// The JOYINFO structure contains information about the joystick position and button state.
-        /// </summary>
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        public struct JOYINFO
-        {
-            /// <summary>
-            /// Current X-coordinate.
-            /// </summary>
-            public int wXpos;
-
-            /// <summary>
-            /// Current Y-coordinate.
-            /// </summary>
-            public int wYpos;
-
-            /// <summary>
-            /// Current Z-coordinate.
-            /// </summary>
-            public int wZpos;
-
-            /// <summary>
-            /// Current state of joystick buttons.
-            /// </summary>
-            public JOYBUTTONS wButtons;
-        }
-
-        /// <summary>
-        /// The JOYINFOEX structure contains extended information about the joystick position, point-of-view position, and button state.
-        /// </summary>
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        public struct JOYINFOEX
-        { 
-            /// <summary>
-            /// Size, in bytes, of this structure.
-            /// </summary>
-            public int dwSize; 
-
-            /// <summary>
-            /// Flags indicating the valid information returned in this structure.
-            /// </summary>
-            public JOYINFOFLAGS dwFlags; 
-
-            /// <summary>
-            /// Current X-coordinate.
-            /// </summary>
-            public int dwXpos; 
-
-            /// <summary>
-            /// Current Y-coordinate.
-            /// </summary>
-            public int dwYpos; 
-
-            /// <summary>
-            /// Current Z-coordinate.
-            /// </summary>
-            public int dwZpos; 
-
-            /// <summary>
-            /// Current position of the rudder or fourth joystick axis.
-            /// </summary>
-            public int dwRpos; 
-
-            /// <summary>
-            /// Current fifth axis position.
-            /// </summary>
-            public int dwUpos; 
-
-            /// <summary>
-            /// Current sixth axis position.
-            /// </summary>
-            public int dwVpos; 
-
-            /// <summary>
-            /// Current state of the 32 joystick buttons. The value of this member can be set to any combination of JOY_BUTTONn flags, where n is a value in the range of 1 through 32 corresponding to the button that is pressed.
-            /// </summary>
-            public JOYBUTTONS dwButtons; 
-
-            /// <summary>
-            /// Current button number that is pressed.
-            /// </summary>
-            public int dwButtonNumber; 
-
-            /// <summary>
-            /// Current position of the point-of-view control. Values for this member are in the range 0 through 35,900. These values represent the angle, in degrees, of each view multiplied by 100.
-            /// </summary>
-            public int dwPOV; 
-
-            /// <summary>
-            /// Reserved one; do not use.
-            /// </summary>
-            public int dwReserved1; 
-
-            /// <summary>
-            /// Reserved two; do not use.
-            /// </summary>
-            public int dwReserved2; 
-        }
-
-        /// <summary>
-        /// The WAVEOUTCAPS structure describes the capabilities of a waveform-audio output device.
-        /// </summary>
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        public struct WAVEOUTCAPS
-        {
-            /// <summary>
-            /// Specifies the manufacturer id of the device.
-            /// </summary>
-            public short wMid;
-
-            /// <summary>
-            /// Specifies the product id of the device.
-            /// </summary>
-            public short wPid;
-
-            /// <summary>
-            /// Specifies the version of the device's driver.
-            /// </summary>
-            public int vDriverVersion;
-
-            /// <summary>
-            /// Specifies the name of the device.
-            /// </summary>
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-            public string szPname;
-
-            /// <summary>
-            /// Specifies the WAVE formats the device supports.
-            /// </summary>
-            public WAVEFORMATS dwFormats;
-
-            /// <summary>
-            /// Specifies the number of channels the device supports.
-            /// </summary>
-            public short wChannels;
-
-            /// <summary>
-            /// Unused.  Padding.
-            /// </summary>
-            public short wReserved1;
-
-            /// <summary>
-            /// Specifies the features that the device supports.
-            /// </summary>
-            public WAVECAPS dwSupport;
-        }
-
-        /// <summary>
-        /// The WAVEINCAPS structure describes the capabilities of a waveform-audio input device.
-        /// </summary>
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        public struct WAVEINCAPS
-        {
-            /// <summary>
-            /// The ManufacturerID.
-            /// </summary>
-            public short wMid;
-
-            /// <summary>
-            /// The ProductID.
-            /// </summary>
-            public short wPid;
-
-            /// <summary>
-            /// The device's driver version.
-            /// </summary>
-            public int vDriverVersion;
-
-            /// <summary>
-            /// The name of the device.
-            /// </summary>
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-            public string szPname;
-
-            /// <summary>
-            /// The formats the device supports.
-            /// </summary>
-            public int dwFormats;
-
-            /// <summary>
-            /// The number of channels the device supports.
-            /// </summary>
-            public short wChannels;
-
-            /// <summary>
-            /// Reserved for internal use.
-            /// </summary>
-            public short wReserved1;
-        }
-
-        /// <summary>
-        /// The WAVEHDR structure defines the header used to identify a waveform-audio buffer.
-        /// </summary>
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        public struct WAVEHDR
-        {
-            /// <summary>
-            /// Pointer to the waveform buffer.
-            /// </summary>
-            public IntPtr lpData;
-
-            /// <summary>
-            /// Length, in bytes, of the buffer.
-            /// </summary>
-            public int dwBufferLength;
-
-            /// <summary>
-            /// When the header is used in input, this member specifies how much data is in the buffer.
-            /// </summary>
-            public int dwBytesRecorded;
-
-            /// <summary>
-            /// User data.
-            /// </summary>
-            public IntPtr dwUser;
-
-            /// <summary>
-            /// Flags supplying information about the buffer. The following values are defined:
-            /// </summary>
-            public WAVEHDRFLAGS dwFlags;
-
-            /// <summary>
-            /// Number of times to play the loop. This member is used only with output buffers.
-            /// </summary>
-            public int dwLoops;
-
-            /// <summary>
-            /// Reserved for internal use.
-            /// </summary>
-            public IntPtr lpNext;
-
-            /// <summary>
-            /// Reserved for internal use.
-            /// </summary>
-            public int reserved;
-        }
-
-        /// <summary>
-        /// Describes the full format of a wave formatted stream.
-        /// </summary>
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        public struct WAVEFORMATEX
-        {
-            /// <summary>
-            /// The wave format of the stream.
-            /// </summary>
-            public short wFormatTag;
-
-            /// <summary>
-            /// The number of channels.
-            /// </summary>
-            public short nChannels;
-
-            /// <summary>
-            /// The number of samples per second.
-            /// </summary>
-            public int nSamplesPerSec;
-
-            /// <summary>
-            /// The average bytes per second.
-            /// </summary>
-            public int nAvgBytesPerSec;
-
-            /// <summary>
-            /// The smallest atomic data size.
-            /// </summary>
-            public short nBlockAlign;
-
-            /// <summary>
-            /// The number of bits per sample.
-            /// </summary>
-            public short wBitsPerSample;
-
-            /// <summary>
-            /// The remaining header size. (Must be zero in this struct format.)
-            /// </summary>
-            public short cbSize;
-        }
-
-        /// <summary>
-        /// Describes the full format of a wave formatted stream.
-        /// </summary>
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        public struct WAVEFORMATEXTENSIBLE
-        {
-            /// <summary>
-            /// The wave format of the stream.
-            /// </summary>
-            public short wFormatTag;
-
-            /// <summary>
-            /// The number of channels.
-            /// </summary>
-            public short nChannels;
-
-            /// <summary>
-            /// The number of samples per second.
-            /// </summary>
-            public int nSamplesPerSec;
-
-            /// <summary>
-            /// The average bytes per second.
-            /// </summary>
-            public int nAvgBytesPerSec;
-
-            /// <summary>
-            /// The smallest atomic data size.
-            /// </summary>
-            public short nBlockAlign;
-
-            /// <summary>
-            /// The number of bits per sample.
-            /// </summary>
-            public short wBitsPerSample;
-
-            /// <summary>
-            /// The remaining header size.
-            /// </summary>
-            public short cbSize;
-
-            /// <summary>
-            /// The number of valid bits per sample.
-            /// </summary>
-            public short wValidBitsPerSample;
-
-            /// <summary>
-            /// The channel mask.
-            /// </summary>
-            public int dwChannelMask;
-
-            /// <summary>
-            /// The sub format identifier.
-            /// </summary>
-            public Guid SubFormat;
-        }
-
-        /// <summary>
-        /// The MMTIME structure contains timing information for different types of multimedia data.
-        /// </summary>
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        public struct MMTIME
-        {
-            /// <summary>
-            /// Time format.
-            /// </summary>
-            public int wType;
-
-            /// <summary>
-            /// The first part of the data.
-            /// </summary>
-            public int wData1;
-
-            /// <summary>
-            /// The second part of the data.
-            /// </summary>
-            public int wData2;
-        }
     }
 }

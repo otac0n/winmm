@@ -65,7 +65,7 @@ namespace WinMM
         /// <summary>
         /// Holds the capabilities of the device.
         /// </summary>
-        private NativeMethods.WAVECAPS capabilities;
+        private WAVECAPS capabilities;
 
         /// <summary>
         /// Gets or sets the system specific identifier of the device.
@@ -163,7 +163,7 @@ namespace WinMM
         {
             get
             {
-                return (this.Capabilities & NativeMethods.WAVECAPS.WAVECAPS_PITCH) != 0;
+                return (this.Capabilities & WAVECAPS.WAVECAPS_PITCH) != 0;
             }
         }
 
@@ -174,7 +174,7 @@ namespace WinMM
         {
             get
             {
-                return (this.Capabilities & NativeMethods.WAVECAPS.WAVECAPS_PLAYBACKRATE) != 0;
+                return (this.Capabilities & WAVECAPS.WAVECAPS_PLAYBACKRATE) != 0;
             }
         }
 
@@ -185,7 +185,7 @@ namespace WinMM
         {
             get
             {
-                return (this.Capabilities & NativeMethods.WAVECAPS.WAVECAPS_VOLUME) != 0;
+                return (this.Capabilities & WAVECAPS.WAVECAPS_VOLUME) != 0;
             }
         }
 
@@ -196,14 +196,14 @@ namespace WinMM
         {
             get
             {
-                return (this.Capabilities & NativeMethods.WAVECAPS.WAVECAPS_LRVOLUME) != 0;
+                return (this.Capabilities & WAVECAPS.WAVECAPS_LRVOLUME) != 0;
             }
         }
 
         /// <summary>
         /// Gets or sets the capabilities of the device.
         /// </summary>
-        internal NativeMethods.WAVECAPS Capabilities
+        internal WAVECAPS Capabilities
         {
             get
             {

@@ -53,7 +53,7 @@ namespace WinMM
         /// </remarks>
         public static void PlaySystemSound(string systemSoundName)
         {
-            int res = NativeMethods.PlaySound(systemSoundName, (IntPtr)0, NativeMethods.PLAYSOUNDFLAGS.SND_ALIAS | NativeMethods.PLAYSOUNDFLAGS.SND_PURGE | NativeMethods.PLAYSOUNDFLAGS.SND_NODEFAULT | NativeMethods.PLAYSOUNDFLAGS.SND_ASYNC);
+            int res = NativeMethods.PlaySound(systemSoundName, (IntPtr)0, PLAYSOUNDFLAGS.SND_ALIAS | PLAYSOUNDFLAGS.SND_PURGE | PLAYSOUNDFLAGS.SND_NODEFAULT | PLAYSOUNDFLAGS.SND_ASYNC);
             if (res == 0)
             {
                 throw new Win32Exception(Marshal.GetLastWin32Error());
@@ -65,7 +65,7 @@ namespace WinMM
         /// </summary>
         public static void StopAllSounds()
         {
-            int res = NativeMethods.PlaySound(null, (IntPtr)0, NativeMethods.PLAYSOUNDFLAGS.SND_PURGE);
+            int res = NativeMethods.PlaySound(null, (IntPtr)0, PLAYSOUNDFLAGS.SND_PURGE);
             if (res == 0)
             {
                 throw new Win32Exception(Marshal.GetLastWin32Error());
@@ -78,7 +78,7 @@ namespace WinMM
         /// <param name="soundFileName">The filename of the file to play.</param>
         public static void PlaySoundFile(string soundFileName)
         {
-            int res = NativeMethods.PlaySound(soundFileName, (IntPtr)0, NativeMethods.PLAYSOUNDFLAGS.SND_FILENAME | NativeMethods.PLAYSOUNDFLAGS.SND_PURGE | NativeMethods.PLAYSOUNDFLAGS.SND_NODEFAULT | NativeMethods.PLAYSOUNDFLAGS.SND_ASYNC);
+            int res = NativeMethods.PlaySound(soundFileName, (IntPtr)0, PLAYSOUNDFLAGS.SND_FILENAME | PLAYSOUNDFLAGS.SND_PURGE | PLAYSOUNDFLAGS.SND_NODEFAULT | PLAYSOUNDFLAGS.SND_ASYNC);
             if (res == 0)
             {
                 throw new Win32Exception(Marshal.GetLastWin32Error());

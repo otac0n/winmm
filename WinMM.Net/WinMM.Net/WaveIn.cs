@@ -113,7 +113,7 @@ namespace WinMM
         /// Dispose or the Finalizer is called to prevent the garbage collector from finalizing
         /// the instance we pass to the <see cref="NativeMethods.waveInOpen"/> method.
         /// </remarks>
-        private NativeMethods.waveInProc callback;
+        private WaveInProc callback;
 
         /// <summary>
         /// Initializes a new instance of the WaveIn class, based on an available Device Id.
@@ -127,7 +127,7 @@ namespace WinMM
                 throw new ArgumentOutOfRangeException("deviceId", "The Device ID specified was not within the valid range.");
             }
 
-            this.callback = new NativeMethods.waveInProc(this.InternalCallback);
+            this.callback = new WaveInProc(this.InternalCallback);
 
             this.deviceId = (int)deviceId;
         }
@@ -237,7 +237,7 @@ namespace WinMM
                     throw new InvalidOperationException("The device is already open.");
                 }
 
-                NativeMethods.WAVEFORMATEX wfx = new NativeMethods.WAVEFORMATEX();
+                WAVEFORMATEX wfx = new WAVEFORMATEX();
                 wfx.nAvgBytesPerSec = waveFormat.AverageBytesPerSecond;
                 wfx.wBitsPerSample = waveFormat.BitsPerSample;
                 wfx.nBlockAlign = waveFormat.BlockAlign;
@@ -256,7 +256,7 @@ namespace WinMM
                         ref wfx,
                         this.callback,
                         (IntPtr)0,
-                        NativeMethods.WAVEOPENFLAGS.CALLBACK_FUNCTION | NativeMethods.WAVEOPENFLAGS.WAVE_FORMAT_DIRECT),
+                        WaveOpenFlags.CALLBACK_FUNCTION | WaveOpenFlags.WAVE_FORMAT_DIRECT),
                     NativeMethods.ErrorSource.WaveOut);
                 this.handle = new WaveInSafeHandle(tempHandle);
             }
@@ -349,7 +349,7 @@ namespace WinMM
         /// <returns>true, if the format is supported; false, otherwise.</returns>
         public bool SupportsFormat(WaveFormat waveFormat)
         {
-            NativeMethods.WAVEFORMATEX wfx = new NativeMethods.WAVEFORMATEX();
+            WAVEFORMATEX wfx = new WAVEFORMATEX();
             wfx.nAvgBytesPerSec = waveFormat.AverageBytesPerSecond;
             wfx.wBitsPerSample = waveFormat.BitsPerSample;
             wfx.nBlockAlign = waveFormat.BlockAlign;
@@ -359,19 +359,19 @@ namespace WinMM
             wfx.cbSize = 0;
 
             IntPtr dummy = new IntPtr(0);
-            NativeMethods.MMSYSERROR ret = NativeMethods.waveInOpen(
+            MMSYSERROR ret = NativeMethods.waveInOpen(
                 ref dummy,
                 this.deviceId,
                 ref wfx,
                 null,
                 (IntPtr)0,
-                NativeMethods.WAVEOPENFLAGS.WAVE_FORMAT_QUERY);
+                WaveOpenFlags.WAVE_FORMAT_QUERY);
 
-            if (ret == NativeMethods.MMSYSERROR.MMSYSERR_NOERROR)
+            if (ret == MMSYSERROR.MMSYSERR_NOERROR)
             {
                 return true;
             }
-            else if (ret == NativeMethods.MMSYSERROR.WAVERR_BADFORMAT)
+            else if (ret == MMSYSERROR.WAVERR_BADFORMAT)
             {
                 return false;
             }
@@ -398,7 +398,7 @@ namespace WinMM
         /// <returns>The capabilities of the device.</returns>
         private static WaveInDeviceCaps GetDeviceCaps(int deviceId)
         {
-            NativeMethods.WAVEINCAPS wicaps = new NativeMethods.WAVEINCAPS();
+            WAVEINCAPS wicaps = new WAVEINCAPS();
             NativeMethods.waveInGetDevCaps((IntPtr)deviceId, ref wicaps, Marshal.SizeOf(wicaps.GetType()));
             WaveInDeviceCaps caps = new WaveInDeviceCaps();
             caps.DeviceId = (int)deviceId;
@@ -512,7 +512,7 @@ namespace WinMM
             IntPtr mem = Marshal.AllocHGlobal(bufferLength);
 
             // Initialize the buffer header, including a reference to the buffer memory
-            NativeMethods.WAVEHDR pwh = new NativeMethods.WAVEHDR();
+            WAVEHDR pwh = new WAVEHDR();
             pwh.dwBufferLength = bufferLength;
             pwh.dwFlags = 0;
             pwh.lpData = mem;
@@ -524,12 +524,12 @@ namespace WinMM
 
             // Prepare the header
             NativeMethods.Throw(
-                NativeMethods.waveInPrepareHeader(this.handle, header, Marshal.SizeOf(typeof(NativeMethods.WAVEHDR))),
+                NativeMethods.waveInPrepareHeader(this.handle, header, Marshal.SizeOf(typeof(WAVEHDR))),
                 NativeMethods.ErrorSource.WaveOut);
 
             // Add the buffer to the device
             NativeMethods.Throw(
-                NativeMethods.waveInAddBuffer(this.handle, header, Marshal.SizeOf(typeof(NativeMethods.WAVEHDR))),
+                NativeMethods.waveInAddBuffer(this.handle, header, Marshal.SizeOf(typeof(WAVEHDR))),
                 NativeMethods.ErrorSource.WaveOut);
 
             lock (this.bufferingLock)
@@ -553,7 +553,7 @@ namespace WinMM
                 Monitor.Pulse(this.bufferingLock);
             }
 
-            NativeMethods.WAVEHDR pwh = (NativeMethods.WAVEHDR)Marshal.PtrToStructure(header, typeof(NativeMethods.WAVEHDR));
+            WAVEHDR pwh = (WAVEHDR)Marshal.PtrToStructure(header, typeof(WAVEHDR));
 
             // Find and copy the buffer data
             IntPtr data = pwh.lpData;
@@ -568,7 +568,7 @@ namespace WinMM
 
             // Unprepare the header
             NativeMethods.Throw(
-                NativeMethods.waveInUnprepareHeader(this.handle, header, Marshal.SizeOf(typeof(NativeMethods.WAVEHDR))),
+                NativeMethods.waveInUnprepareHeader(this.handle, header, Marshal.SizeOf(typeof(WAVEHDR))),
                 NativeMethods.ErrorSource.WaveIn);
 
             // Free the unmanaged memory
@@ -584,9 +584,9 @@ namespace WinMM
         /// <param name="instance">A user instance value.</param>
         /// <param name="param1">Message parameter one.</param>
         /// <param name="param2">Message parameter two.</param>
-        private void InternalCallback(IntPtr waveInHandle, NativeMethods.WAVEINMESSAGE message, IntPtr instance, IntPtr param1, IntPtr param2)
+        private void InternalCallback(IntPtr waveInHandle, WaveInMessage message, IntPtr instance, IntPtr param1, IntPtr param2)
         {
-            if (message == NativeMethods.WAVEINMESSAGE.MM_WIM_DATA)
+            if (message == WaveInMessage.DataReady)
             {
                 lock (this.bufferingLock)
                 {
