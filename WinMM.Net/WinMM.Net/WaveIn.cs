@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="WaveIn.cs" company="(none)">
-//  Copyright © 2009 John Gietzen
+//  Copyright © 2010 John Gietzen
 //
 //  Permission is hereby granted, free of charge, to any person obtaining
 //  a copy of this software and associated documentation files (the
@@ -49,6 +49,11 @@ namespace WinMM
         /// Holds a list of manufactureres, read lazily from the assembly's resources.
         /// </summary>
         private static XmlDocument manufacturers;
+
+        /// <summary>
+        /// Holds the device's capabilities.
+        /// </summary>
+        private WaveInDeviceCaps capabilities;
 
         /// <summary>
         /// Hold a locking object for start/stop synchronization.
@@ -150,7 +155,10 @@ namespace WinMM
         /// </summary>
         public static ReadOnlyCollection<WaveInDeviceCaps> Devices
         {
-            get { return GetAllDeviceCaps().AsReadOnly(); }
+            get
+            {
+                return GetAllDeviceCaps().AsReadOnly();
+            }
         }
 
         /// <summary>
@@ -192,6 +200,22 @@ namespace WinMM
                 }
 
                 this.bufferQueueSize = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets this device's capabilities.
+        /// </summary>
+        public WaveInDeviceCaps Capabilities
+        {
+            get
+            {
+                if (this.capabilities == null)
+                {
+                    this.capabilities = GetDeviceCaps(this.deviceId);
+                }
+
+                return this.capabilities;
             }
         }
 

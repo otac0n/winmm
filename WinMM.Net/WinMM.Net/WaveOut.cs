@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="WaveOut.cs" company="(none)">
-//  Copyright © 2009 John Gietzen
+//  Copyright © 2010 John Gietzen
 //
 //  Permission is hereby granted, free of charge, to any person obtaining
 //  a copy of this software and associated documentation files (the
@@ -140,7 +140,10 @@ namespace WinMM
         /// </summary>
         public static ReadOnlyCollection<WaveOutDeviceCaps> Devices
         {
-            get { return GetAllDeviceCaps().AsReadOnly(); }
+            get
+            {
+                return GetAllDeviceCaps().AsReadOnly();
+            }
         }
 
         /// <summary>
@@ -523,7 +526,7 @@ namespace WinMM
             {
                 man = (XmlElement)manufacturers.SelectSingleNode("/devices/manufacturer[@id='" + manufacturerId.ToString(CultureInfo.InvariantCulture) + "']");
             }
-            
+
             if (man == null)
             {
                 return "Unknown [" + manufacturerId + "]";
@@ -566,7 +569,7 @@ namespace WinMM
         {
             List<WaveOutDeviceCaps> devices = new List<WaveOutDeviceCaps>();
             int count = DeviceCount;
-            
+
             for (int i = 0; i < count; i++)
             {
                 devices.Add(GetDeviceCaps(i));

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="DataReadyEventArgs.cs" company="(none)">
+// <copyright file="Program.cs" company="(none)">
 //  Copyright © 2010 John Gietzen
 //
 //  Permission is hereby granted, free of charge, to any person obtaining
@@ -25,38 +25,25 @@
 // <author>John Gietzen</author>
 //-----------------------------------------------------------------------
 
-namespace WinMM
+namespace EchoDemo
 {
     using System;
+    using System.Windows.Forms;
 
     /// <summary>
-    /// Describes an DataReady event.
+    /// The class that contains the main entry point for the application.
     /// </summary>
-    public class DataReadyEventArgs : EventArgs
+    public static class Program
     {
         /// <summary>
-        /// Holds the value of the data, specific to this event.
+        /// The main entry point for the application.
         /// </summary>
-        private byte[] data;
-
-        /// <summary>
-        /// Initializes a new instance of the DataReadyEventArgs class with the specified data.
-        /// </summary>
-        /// <param name="data">The data specific to this event.</param>
-        public DataReadyEventArgs(byte[] data)
+        [STAThread]
+        private static void Main()
         {
-            this.data = data;
-        }
-
-        /// <summary>
-        /// Gets the value of the data, specific to this event.
-        /// </summary>
-        public byte[] Data
-        {
-            get
-            {
-                return this.data;
-            }
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainView());
         }
     }
 }

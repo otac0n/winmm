@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="PlaySound.cs" company="(none)">
-//  Copyright © 2009 John Gietzen
+//  Copyright © 2010 John Gietzen
 //
 //  Permission is hereby granted, free of charge, to any person obtaining
 //  a copy of this software and associated documentation files (the
@@ -39,7 +39,7 @@ namespace WinMM
         /// <summary>
         /// Prevents a default instance of the PlaySound class from being created.
         /// </summary>
-        private PlaySound() 
+        private PlaySound()
         {
         }
 
