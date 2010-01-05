@@ -59,15 +59,8 @@ namespace WinMM
         /// <returns>true, if disposing of the handle succeeded; false, otherwise.</returns>
         protected override bool ReleaseHandle()
         {
-            if (!this.IsClosed)
-            {
-                MMSYSERROR ret = NativeMethods.waveInClose(this);
-                return ret == MMSYSERROR.MMSYSERR_NOERROR;
-            }
-            else
-            {
-                return true;
-            }
+            MMSYSERROR ret = NativeMethods.waveInClose(this);
+            return ret == MMSYSERROR.MMSYSERR_NOERROR;
         }
     }
 }

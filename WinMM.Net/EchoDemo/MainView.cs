@@ -58,7 +58,7 @@ namespace EchoDemo
         public MainView()
         {
             InitializeComponent();
-            
+
             // We are using a hard-coded format that should be supported by all consumer sound devices available today.
             WaveFormat format = WaveFormat.Pcm44Khz16BitMono;
 
