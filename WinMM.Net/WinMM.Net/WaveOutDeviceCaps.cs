@@ -33,134 +33,62 @@ namespace WinMM
     public class WaveOutDeviceCaps
     {
         /// <summary>
-        /// Holds the system specific identifier of the device
-        /// </summary>
-        private int deviceId;
-
-        /// <summary>
-        /// Holds the device's manufacturer name.
-        /// </summary>
-        private string manufacturer;
-
-        /// <summary>
-        /// Holds the device's product id.
-        /// </summary>
-        private int productId;
-
-        /// <summary>
-        /// Holds the device's driver version.
-        /// </summary>
-        private int driverVersion;
-
-        /// <summary>
-        /// Holds the name of the device.
-        /// </summary>
-        private string name;
-
-        /// <summary>
-        /// Holds the number of channels the device is capable of playing.
-        /// </summary>
-        private int channels;
-
-        /// <summary>
         /// Holds the capabilities of the device.
         /// </summary>
         private WAVECAPS capabilities;
 
         /// <summary>
-        /// Gets or sets the system specific identifier of the device.
+        /// Gets the system specific identifier of the device.
         /// </summary>
         public int DeviceId
         {
-            get
-            {
-                return this.deviceId;
-            }
-
-            set
-            {
-                this.deviceId = value;
-            }
+            get;
+            internal set;
         }
 
         /// <summary>
-        /// Gets or sets the device's manufacturer name.
+        /// Gets the device's manufacturer name.
         /// </summary>
         public string Manufacturer
         {
-            get
-            {
-                return this.manufacturer;
-            }
-
-            set
-            {
-                this.manufacturer = value;
-            }
+            get;
+            internal set;
         }
 
         /// <summary>
-        /// Gets or sets the device's product id.
+        /// Gets the device's product id.
         /// </summary>
         public int ProductId
         {
-            get
-            {
-                return this.productId;
-            }
-
-            set
-            {
-                this.productId = value;
-            }
+            get;
+            internal set;
         }
 
         /// <summary>
-        /// Gets or sets the device's driver version.
+        /// Gets the device's driver version.
         /// </summary>
         public int DriverVersion
         {
-            get
-            {
-                return this.driverVersion;
-            }
-
-            set
-            {
-                this.driverVersion = value;
-            }
+            get;
+            internal set;
         }
 
         /// <summary>
-        /// Gets or sets the name of the device.
+        /// Gets the name of the device.
         /// </summary>
         public string Name
         {
-            get
-            {
-                return this.name;
-            }
-
-            set
-            {
-                this.name = value;
-            }
+            get;
+            internal set;
         }
 
         /// <summary>
-        /// Gets or sets the number of channels the device is capable of playing.
+        /// Gets the number of channels the device is capable of playing.
         /// </summary>
         public int Channels
         {
-            get
-            {
-                return this.channels;
-            }
-
-            set
-            {
-                this.channels = value;
-            }
+            get;
+            internal set;
         }
 
         /// <summary>

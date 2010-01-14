@@ -83,7 +83,7 @@ namespace WinMM
     /// The JOYCAPS structure contains information about the joystick capabilities.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-    public struct JoystickCapabilities
+    public struct JOYCAPS
     {
         /// <summary>
         /// Manufacturer identifier.
@@ -1335,6 +1335,11 @@ namespace WinMM
         public enum ErrorSource
         {
             /// <summary>
+            /// Indicated that the error comes from Joystick.
+            /// </summary>
+            Joystick,
+
+            /// <summary>
             /// Indicated that the error comes from WaveIn.
             /// </summary>
             WaveIn,
@@ -1373,7 +1378,7 @@ namespace WinMM
         /// Use the joyGetNumDevs function to determine the number of joystick devices supported by the driver.
         /// </remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR joyGetDevCaps(int uJoyID, IntPtr pjc, int cbjc);
+        public static extern MMSYSERROR joyGetDevCaps(int uJoyID, ref JOYCAPS pjc, int cbjc);
 
         /// <summary>
         /// The joyGetNumDevs function queries the joystick driver for the number of joysticks it supports.
@@ -1413,7 +1418,7 @@ namespace WinMM
         /// This function provides access to extended devices such as rudder pedals, point-of-view hats, devices with a large number of buttons, and coordinate systems using up to six axes. For joystick devices that use three axes or fewer and have fewer than four buttons, use the joyGetPos function.
         /// </remarks>
         [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-        public static extern MMSYSERROR joyGetPosEx(int uJoyID, IntPtr pji);
+        public static extern MMSYSERROR joyGetPosEx(int uJoyID, ref JOYINFOEX pji);
 
         /// <summary>
         /// The joyGetThreshold function queries a joystick for its current movement threshold.
@@ -1525,7 +1530,7 @@ namespace WinMM
 
             if (pullInfoError != MMSYSERROR.MMSYSERR_NOERROR)
             {
-                details = error.ToString() + "(" + ((int)error).ToString(CultureInfo.CurrentCulture) + ")";
+                details = error.ToString() + " (" + ((int)error).ToString(CultureInfo.CurrentCulture) + ")";
             }
             else
             {

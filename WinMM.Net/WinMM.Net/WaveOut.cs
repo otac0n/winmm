@@ -112,14 +112,14 @@ namespace WinMM
         /// <exception cref="ArgumentOutOfRangeException">If <paramref name="deviceId"/> is not in the valid range.</exception>
         public WaveOut(int deviceId)
         {
-            if (deviceId >= DeviceCount && deviceId != WaveOutMapperDeviceId)
+            if ((deviceId >= DeviceCount || deviceId < 0) && deviceId != WaveOutMapperDeviceId)
             {
                 throw new ArgumentOutOfRangeException("deviceId", "The Device ID specified was not within the valid range.");
             }
 
             this.callback = new WaveOutProc(this.InternalCallback);
 
-            this.deviceId = (int)deviceId;
+            this.deviceId = deviceId;
         }
 
         /// <summary>

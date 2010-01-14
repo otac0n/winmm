@@ -56,6 +56,9 @@
     <Compile Include="Exceptions\InvalidParameterException.cs" />
     <Compile Include="Exceptions\MMSystemException.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Joystick.cs" />
+    <Compile Include="JoystickDeviceCaps.cs" />
+    <Compile Include="JoystickState.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="PlaySound.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
